@@ -7,6 +7,19 @@ MCU
 
 - IDE: Energia 1.6
 
+## Instructions
+
+If given control signal through BLUETOOTH:
+
+- goAhead(): `A`
+
+- goBackward(): `B`
+
+- trunLeft(): `L`
+
+- trunRight(): `R`
+
+- park(): `P`
 
 ## Setup
 

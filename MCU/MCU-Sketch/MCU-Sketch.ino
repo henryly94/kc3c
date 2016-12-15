@@ -1,6 +1,7 @@
 // Pin Mapping [Check Document]
 
-#define STEER P2_0
+#define RIGHT_ENABLE P2_0
+#define LEFT_ENABLE P2_5
 #define LEFT_AHEAD P2_1
 #define LEFT_BACK P2_2
 #define RIGHT_AHEAD P2_3
@@ -8,15 +9,20 @@
 
 // AHEAD: HIGH  BACK: LOW -> MOVE FORWARD
 // AHEAD: LOW  BACK: HIGH -> MOVE BACKWARD
-// STEER: Change speed by changing duty ratio
+// LEFT_ENABLE: Change speed by changing duty ratio
+
+// Default Value
+#define VALUE_A 170
+#define VALUE_B 128
 
 // Interface
+// Precise direction control -> analogWrite()
 
 void goAhead();
 void goBackward();
 void turnLeft();
 void turnRight();
-void stop();
+void park();
 
 // Implementation
 
@@ -25,7 +31,7 @@ void goAhead() {
   digitalWrite(LEFT_BACK,LOW);
   digitalWrite(RIGHT_AHEAD,HIGH);
   digitalWrite(RIGHT_BACK,LOW);
-  //change steer
+  // analogWrite(PIN, VALUE);
 }
 
 void goBackward(){
@@ -33,31 +39,27 @@ void goBackward(){
   digitalWrite(LEFT_BACK,HIGH);
   digitalWrite(RIGHT_AHEAD,LOW);
   digitalWrite(RIGHT_BACK,HIGH);
-  //change steer
 }
 
-void stop(){
+void park(){
   digitalWrite(LEFT_AHEAD,LOW);
   digitalWrite(LEFT_BACK,LOW);
   digitalWrite(RIGHT_AHEAD,LOW);
   digitalWrite(RIGHT_BACK,LOW);
-  //change steer
 }
 
 void turnLeft(){
-  digitalWrite(LEFT_AHEAD,HIGH);
-  digitalWrite(LEFT_BACK,LOW);
-  digitalWrite(RIGHT_AHEAD,LOW);
-  digitalWrite(RIGHT_BACK,LOW);
-  //change steer
-}
-
-void turnRight(){
   digitalWrite(LEFT_AHEAD,LOW);
   digitalWrite(LEFT_BACK,LOW);
   digitalWrite(RIGHT_AHEAD,HIGH);
   digitalWrite(RIGHT_BACK,LOW);
-  //change steer
+}
+
+void turnRight(){
+  digitalWrite(LEFT_AHEAD,HIGH);
+  digitalWrite(LEFT_BACK,LOW);
+  digitalWrite(RIGHT_AHEAD,LOW);
+  digitalWrite(RIGHT_BACK,LOW);
 }
 
 // Main
@@ -66,17 +68,21 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
 
-  Serial.println("\n\nKC3C-MCU-Sketch");
+  Serial.println("\n\nKC3C-MCU");
   Serial.println("weehowe.z@gmail.com");
   Serial.println("henryly94@gmail.com");
 
   pinMode(LEFT_AHEAD,OUTPUT);
   pinMode(LEFT_BACK,OUTPUT);
+  pinMode(LEFT_ENABLE,OUTPUT);
   pinMode(RIGHT_AHEAD,OUTPUT);
   pinMode(RIGHT_BACK,OUTPUT);
-  pinMode(STEER,OUTPUT);
+  pinMode(RIGHT_ENABLE,OUTPUT);
 
-  stop();
+  digitalWrite(LEFT_ENABLE,HIGH);
+  digitalWrite(RIGHT_ENABLE,HIGH);
+
+  park();
 }
 
 void loop() {
@@ -86,11 +92,25 @@ void loop() {
     char incomingByte = Serial.read();
     Serial.println(incomingByte);
 
-    if (incomingByte == 'A') goAhead();
-    else if (incomingByte == 'B') goBackward();
-    else if (incomingByte == 'L') turnLeft();
-    else if (incomingByte == 'R') turnRight();
-    else if (incomingByte == 'S') stop();
-
+    if (incomingByte == 'A') {
+      Serial.println("Go ahead");
+      goAhead();
+    }
+    else if (incomingByte == 'B') {
+      Serial.println("Go backward");
+      goBackward();
+    }
+    else if (incomingByte == 'L') {
+      Serial.println("Turn left");
+      turnLeft();
+    }
+    else if (incomingByte == 'R') {
+      Serial.println("Turn Right");
+      turnRight();
+    }
+    else if (incomingByte == 'P') {
+      Serial.println("Stop");
+      park();
+    }
   }
 }
