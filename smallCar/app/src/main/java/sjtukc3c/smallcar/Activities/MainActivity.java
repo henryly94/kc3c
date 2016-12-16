@@ -22,7 +22,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
 
         //Test
-        startActivity(new Intent(MainActivity.this, ConnectionActivity.class));
+//        Intent intent = new Intent(MainActivity.this, MasterActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
 
         initView();
     }

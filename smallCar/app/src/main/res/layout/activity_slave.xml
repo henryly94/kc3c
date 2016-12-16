@@ -2,18 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <SurfaceView
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:id="@+id/slave_surfaceView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_below="@+id/slave_surfaceView">
+        android:layout_height="300dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/slave_btn_begin"
@@ -30,5 +22,12 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/slave_etv"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -20,7 +20,6 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import sjtukc3c.smallcar.Modules.SocketManager;
 import sjtukc3c.smallcar.R;
 
 /**
@@ -36,7 +35,6 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
 
     private static int mPort = 15536;
 
-    private SocketManager mSocketManager;
     private ServerSocket mServerSocket;
     private Socket mSocket;
 
@@ -135,7 +133,6 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     }
 
     private void initSocket(){
-//        mSocketManager = new SocketManager(this);
         mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mTextView_myIp.setText(getWIFILocalIpAdress());
         try {
@@ -167,7 +164,6 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
 
     private void buildConnection(){
         String targetIp = mTextView_targetIp.getText().toString();
-//        mSocketManager.BuildUpConnection(targetIp, 15536);
         try {
             mSocket = new Socket(targetIp, 15536);
 

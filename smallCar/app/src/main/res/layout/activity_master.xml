@@ -1,7 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout     xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-</FrameLayout>
+
+
+    <LinearLayout
+        android:background="#CCFF00"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/back"
+            android:background="#55DDDDDD"
+            android:alpha="1"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/master_back"
+            android:layout_gravity="center_vertical"
+            android:adjustViewBounds="false" />
+
+        <HorizontalScrollView
+            android:layout_weight="20"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/master_scroll"
+            android:scrollbars="none"
+            android:layout_gravity="center_horizontal|top" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:textSize="30dp"
+                    android:gravity="center"
+                    android:text="Main"
+                    android:layout_width="327dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/master_tv_main" />
+
+                <TextView
+                    android:textSize="30dp"
+                    android:gravity="center"
+                    android:text="Voice"
+                    android:layout_width="327dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/mater_tv_voice" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:alpha="0.5"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:alpha="1"
+            android:text="Text"
+            android:layout_gravity="right|bottom" />
+
+    </FrameLayout>
+
+    <SurfaceView
+        android:id="@+id/master_surfaceview"
+        android:layout_width="720px"
+        android:layout_height="960px"
+        android:layout_gravity="center" />
+
+</LinearLayout>
