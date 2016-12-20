@@ -4,4 +4,8 @@
 
 
     <string name="no_camera">The Device has no camera!</string>
+    
+    
+    <string name="menu_master_about">About Us</string>
+    <string name="menu_master_config">Configure</string>
 </resources>
