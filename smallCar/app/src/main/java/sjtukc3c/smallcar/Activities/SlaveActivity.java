@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -31,7 +33,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import sjtukc3c.smallcar.Constants.MyConstants;
 import sjtukc3c.smallcar.Fragments.SlaveFragment;
+import sjtukc3c.smallcar.Modules.BluetoothManager;
 import sjtukc3c.smallcar.Modules.SocketManagerSlave;
 import sjtukc3c.smallcar.R;
 
@@ -55,18 +59,53 @@ public class SlaveActivity extends AppCompatActivity
     private PagerSlidingTabStrip mTab;
     private MyAdapter mAdapter;
 
-    private static boolean mThreadEnd = false;
+    private BluetoothManager mBluetoothManager;
+
+    private static boolean mCmdThreadEnd = false;
+
+
 
     private int mPort = 15536;
-
+    private int myPort = 15536;
+    private int cmdPort = 15546;
     private ServerSocket mServerSocket;
+
+
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MyConstants.TAG_REMOTE_MASTER_CONNECT:
+                    Bundle bundle = msg.getData();
+                    mPort = bundle.getInt(MyConstants.TAG_PORT);
+                    mFragment.getEt().setText(bundle.getString(MyConstants.TAG_IP));
+                    doBegin();
+                    break;
+                case MyConstants.TAG_BLUETOOTH_REQUEST:
+                    mBluetoothManager.buildUp();
+                    break;
+                case MyConstants.TAG_REMOTE_MASTER_COMMAND:
+                    String cmd = msg.getData().getString(MyConstants.TAG_CMD);
+                    mBluetoothManager.sendMessage(cmd);
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slave);
         initView();
+        initBluetooth();
         initTool();
+    }
+
+    private void initBluetooth() {
+        mBluetoothManager = new BluetoothManager(this, mHandler);
     }
 
 
@@ -105,44 +144,72 @@ public class SlaveActivity extends AppCompatActivity
     }
 
     private void initTool(){
-        mThreadEnd = false;
+        mCmdThreadEnd = false;
         mSocketManagerSlave = new SocketManagerSlave(this);
+        Log.e("Lyy", (!mCmdThreadEnd)+ "" + (mServerSocket == null));
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (mServerSocket == null){
-                    try {
-                        mServerSocket = new ServerSocket(mPort);
-                        while (!mThreadEnd){
-                            Socket s = mServerSocket.accept();
-                            if (s != null){
-                                DataInputStream dis = new DataInputStream(s.getInputStream());
-                                String json = dis.readUTF();
-                                try {
-                                    org.json.JSONObject newJson = new JSONObject(json);
-                                    if (newJson.getString("cmd").equals("Connection")){
-                                        String ip = newJson.getString("Ip");
-                                        int port = newJson.getInt("Port");
-                                        mPort = port;
-                                        mFragment.getEt().setText(ip);
-                                        doBegin();
-
-                                    }
-                                }catch (JSONException e){
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }
-                    } catch (IOException e){
-                        e.printStackTrace();
+                try {
+                    if (mServerSocket == null) {
+                        mServerSocket = new ServerSocket(cmdPort);
+                        Log.e("Lyy", "ServerPort setup on port: " + cmdPort);
                     }
+                    Log.e("Lyy", "" + mCmdThreadEnd);
+                    // TODO: 2016/12/22 ServerSocket好像只能接受一次命令，怀疑可能是被阻塞 
+                    while (!mCmdThreadEnd){
+                        Log.e("Lyy", "CmdThread Running");
+                        Log.e("Lyy", mServerSocket.isClosed() + " | " +mServerSocket.isBound() + " | " +  mServerSocket.getLocalPort());
+                        Socket s = mServerSocket.accept();
+                        Log.e("Lyy", "CmdThread Get New Socket");
+                        if (s != null){
+                            DataInputStream dis = new DataInputStream(s.getInputStream());
+                            String json = dis.readUTF();
+                            Log.e("Lyy", "Receiving:" + json);
+                            try {
+                                handleJsonMessage(json);
+                            }catch (JSONException e){
+                                Log.e("Lyy", "|3| " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.e("Lyy", "Null Socket");
+                        }
+                    }
+                } catch (IOException e){
+                    Log.e("Lyy", "|1| "+e.getMessage());
+                    e.printStackTrace();
                 }
+                Log.e("Lyy", "Laozi bu gan le");
             }
         });
         th.start();
     }
 
+    private void handleJsonMessage(String json) throws JSONException {
+        org.json.JSONObject newJson = new JSONObject(json);
+        if (newJson.getString(MyConstants.TAG_CMD).equals(MyConstants.VALUE_CONNECT)){
+
+            String ip = newJson.getString(MyConstants.TAG_IP);
+            int port = newJson.getInt(MyConstants.TAG_PORT);
+            Message msg = new Message();
+            Bundle bundle = new Bundle();
+            msg.what = MyConstants.TAG_REMOTE_MASTER_CONNECT;
+            bundle.putInt(MyConstants.TAG_PORT, port);
+            bundle.putString(MyConstants.TAG_IP, ip);
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        } else if (newJson.getString(MyConstants.TAG_CMD).equals(MyConstants.VALUE_COMMAND)){
+            Log.e("Lyy", "Receive cmd: " + json);
+            String cmd = newJson.getString(MyConstants.TAG_INSTRUCTION);
+            Message msg = new Message();
+            Bundle bundle = new Bundle();
+            msg.what = MyConstants.TAG_REMOTE_MASTER_COMMAND;
+            bundle.putString(MyConstants.TAG_CMD, cmd);
+            msg.setData(bundle);
+            mHandler.sendMessage(msg);
+        }
+    }
 
 
     private void changeColor(int newColor) {
@@ -173,6 +240,7 @@ public class SlaveActivity extends AppCompatActivity
     }
 
     private void doBegin(){
+
         Log.e("Lyy", "mSocket " + (mSocketManagerSlave == null));
         Log.e("Lyy", "mFragment " + (mFragment == null));
         if (mFragment == null){
@@ -192,6 +260,8 @@ public class SlaveActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_slave_go_back:
+                mCmdThreadEnd = true;
+                mSocketManagerSlave.endConnection();
                 finish();
             default:
                 break;
@@ -254,7 +324,13 @@ public class SlaveActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-        mThreadEnd = true;
+        mCmdThreadEnd = true;
+        try {
+            mServerSocket.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        mBluetoothManager.close();
         super.onStop();
     }
 }

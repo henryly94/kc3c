@@ -44,10 +44,10 @@ public class SocketManagerSlave {
         if (!isConnected) {
             final String h = host;
             final int p = port;
+            Log.e("Lyy", "Send to: " + h + "/" + p);
             Thread th = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    camera.setParameters(mParameters);
                     camera.startPreview();
                     camera.setPreviewCallback(new InputVideoStream(h, p));
                     mConnectionStatus = MyConstants.Connection_On;
@@ -55,34 +55,35 @@ public class SocketManagerSlave {
                 }
             });
             th.start();
+        } else {
+            Log.e("Lyy", "Already Connected");
         }
     }
 
     private void initCamera() {
         if (!isPreview) {
-            camera = Camera.open();
-            Log.e("Lyy", "Camera Opened");
+            while (true) {
+                try {
+                    camera = Camera.open();
+                    Log.e("Lyy", "Camera Opened");
+                    break;
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            Log.e("Lyy", "Already in Preview!");
         }
 
         if (camera != null && !isPreview) {
             try {
 
                 Camera.Parameters parameters = camera.getParameters();
-//                List<android.hardware.Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-//                for (android.hardware.Camera.Size each : sizes){
-//                    Log.e("Lyy", "Preview: " + each.width + ", " + each.height);
-//                }
                 parameters.setPreviewSize(640, 480);
                 Log.e("Lyy", "Something here");
                 parameters.setPictureFormat(ImageFormat.JPEG);
-//                List<Integer> formats =  parameters.getSupportedPictureFormats();
-//                Log.e("Lyy", "Formats: " + formats.toString());
-//                List<android.hardware.Camera.Size> pic_sizes = parameters.getSupportedPreviewSizes();
-//                for (android.hardware.Camera.Size each : pic_sizes){
-//                    Log.e("Lyy", "Picture: " + each.width + ", " + each.height);
-//                }
-                mParameters = parameters;
                 parameters.setPictureSize(640, 480);
+                mParameters = parameters;
                 camera.setParameters(parameters);
                 camera.setDisplayOrientation(90);
                 isPreview = true;
@@ -120,7 +121,7 @@ public class SocketManagerSlave {
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
             long curTime = (new Date(System.currentTimeMillis())).getTime();
-            if (curTime - lastTime < 1000 / 30) {
+            if (curTime - lastTime < 1000 / 10) {
                 return;
             }
             else {

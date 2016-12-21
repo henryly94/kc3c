@@ -26,8 +26,12 @@ public class SocketThreadMaster extends Thread{
     private SurfaceView surfaceView1;
     private SurfaceHolder surfaceHolder;
     private int mPort = 15536;
+    private int mCmdPort = 15546;
     private int mHeight, mWidth;
-    public SocketThreadMaster(ServerSocket ss, SurfaceView sv, int port) {
+    public static boolean running = true;
+    private RemoteCommandManager mCommandManager;
+    public SocketThreadMaster(ServerSocket ss, SurfaceView sv, int port, RemoteCommandManager cmdmanager) {
+        mCommandManager = cmdmanager;
         mPort = port;
         surfaceView1 = sv;
         serverSocket = ss;
@@ -73,24 +77,40 @@ public class SocketThreadMaster extends Thread{
             serverSocket = new ServerSocket(mPort);
             Log.e("Lyy", "Thread here 2");
             SocketAddress address = null;
-            if (!serverSocket.isBound())
-                serverSocket.bind(address, mPort);
+            if (!serverSocket.isBound()) {
+                Log.e("Lyy", "Bound to Any Port");
+                serverSocket.bind(address, 0);
+            }
         } catch (IOException e) {
             Log.e("Lyy", "Thread here 1");
             e.printStackTrace();
         }
     }
 
+    public void stopit(){
+        running = false;
+    }
+
+
     public void run() {
         try {
-            while (true) {
+            running = true;
+            while (running) {
                 if (serverSocket == null || serverSocket.isClosed()){
                     serverSocket = null;
                     serverSocket = new ServerSocket(mPort);
                 }
+                Log.e("Lyy", "Maybe here");
                 Socket s = serverSocket.accept();
                 Log.e("Lyy", s.toString());
                 if (s != null && mWidth > 0 && mHeight > 0) {
+                    if (!mCommandManager.isConnected()) {
+                        mCommandManager.setParams(
+                                s.getInetAddress().getHostAddress(), mCmdPort
+                        );
+                        mCommandManager.buildUpConnection();
+                    }
+                    Log.e("Lyy", s.getInetAddress().getHostAddress() + " | " + s.getInetAddress().getHostName());
                     Log.e("Lyy", "S != null");
                     InputStream in = s.getInputStream();
                     btp = BitmapFactory.decodeStream(in);
@@ -113,5 +133,12 @@ public class SocketThreadMaster extends Thread{
             e.printStackTrace();
         }
 
+    }
+
+    private static String formatIpAddress(int ipAdress) {
+        return (ipAdress & 0xFF ) + "." +
+                ((ipAdress >> 8 ) & 0xFF) + "." +
+                ((ipAdress >> 16 ) & 0xFF) + "." +
+                ( ipAdress >> 24 & 0xFF) ;
     }
 }
