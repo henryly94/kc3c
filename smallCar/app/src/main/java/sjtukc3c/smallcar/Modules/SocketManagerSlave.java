@@ -27,6 +27,9 @@ public class SocketManagerSlave {
     private int mConnectionStatus;
     private long lastTime = 0;
 
+    private Camera.Parameters mParameters;
+
+
     private boolean isPreview = false;
     private boolean isConnected = false;
 
@@ -41,37 +44,55 @@ public class SocketManagerSlave {
         if (!isConnected) {
             final String h = host;
             final int p = port;
-            new Thread() {
+            Thread th = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    camera.setParameters(mParameters);
                     camera.startPreview();
-                    camera.setPreviewCallback(new InputVideoStream(h));
-
+                    camera.setPreviewCallback(new InputVideoStream(h, p));
                     mConnectionStatus = MyConstants.Connection_On;
-
                     isConnected = true;
-
                 }
-            }.run();
+            });
+            th.start();
         }
     }
 
     private void initCamera() {
-        if (!isPreview)
+        if (!isPreview) {
             camera = Camera.open();
+            Log.e("Lyy", "Camera Opened");
+        }
+
         if (camera != null && !isPreview) {
             try {
+
                 Camera.Parameters parameters = camera.getParameters();
+//                List<android.hardware.Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+//                for (android.hardware.Camera.Size each : sizes){
+//                    Log.e("Lyy", "Preview: " + each.width + ", " + each.height);
+//                }
                 parameters.setPreviewSize(640, 480);
-                parameters.setPictureFormat(ImageFormat.NV21);
+                Log.e("Lyy", "Something here");
+                parameters.setPictureFormat(ImageFormat.JPEG);
+//                List<Integer> formats =  parameters.getSupportedPictureFormats();
+//                Log.e("Lyy", "Formats: " + formats.toString());
+//                List<android.hardware.Camera.Size> pic_sizes = parameters.getSupportedPreviewSizes();
+//                for (android.hardware.Camera.Size each : pic_sizes){
+//                    Log.e("Lyy", "Picture: " + each.width + ", " + each.height);
+//                }
+                mParameters = parameters;
                 parameters.setPictureSize(640, 480);
                 camera.setParameters(parameters);
                 camera.setDisplayOrientation(90);
-//                camera.setPreviewDisplay(surfaceHolder);
+                isPreview = true;
+                Log.e("Lyy", "Camera Initialization Success!");
             } catch (Exception e) {
+                Log.e("Lyy", "出大事啦 Wrong!" + e.getMessage());
+
                 e.printStackTrace();
             }
-            isPreview = true;
+
         }
     }
 
@@ -79,30 +100,32 @@ public class SocketManagerSlave {
         if (isConnected) {
             camera.stopPreview();
             camera.setPreviewCallback(null);
+            camera.release();
             isConnected = false;
+            isPreview = false;
         }
 
     }
 
-    public void bindSocketCameraMaster(){
-
-    }
 
     private class InputVideoStream implements Camera.PreviewCallback{
 
         String ipname;
-
-        InputVideoStream(String ip){
+        int port;
+        InputVideoStream(String ip, int p){
             ipname = ip;
+            port = p;
         }
 
         @Override
         public void onPreviewFrame(byte[] data, Camera camera) {
             long curTime = (new Date(System.currentTimeMillis())).getTime();
-            if (curTime - lastTime < 1000 / 30)
+            if (curTime - lastTime < 1000 / 30) {
                 return;
-            else
+            }
+            else {
                 lastTime = curTime;
+            }
             Camera.Size size = camera.getParameters().getPreviewSize();
             try {
                 YuvImage image = new YuvImage(data, ImageFormat.NV21,
@@ -113,11 +136,11 @@ public class SocketManagerSlave {
                             new Rect(0, 0, size.width, size.height), 80,
                             outstream);
                     outstream.flush();
-                    Thread th = new ClientThread(outstream, ipname);
+                    Thread th = new ClientThread(outstream, ipname, port);
                     th.start();
                 }
-            } catch (Exception ex) {
-                Log.e("Sys", "Error:" + ex.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -128,10 +151,12 @@ public class SocketManagerSlave {
         private OutputStream outsocket;
         private ByteArrayOutputStream myoutputstream;
         private String ipname;
+        private int port;
 
-        public ClientThread(ByteArrayOutputStream myoutputstream, String ipname) {
+        public ClientThread(ByteArrayOutputStream myoutputstream, String ipname, int port) {
             this.myoutputstream = myoutputstream;
             this.ipname = ipname;
+            this.port = port;
             try {
                 myoutputstream.close();
             } catch (IOException e) {
@@ -141,7 +166,7 @@ public class SocketManagerSlave {
 
         public void run() {
             try {
-                Socket tempSocket = new Socket(ipname, mPort);
+                Socket tempSocket = new Socket(ipname, port);
                 if (tempSocket != null) {
                     outsocket = tempSocket.getOutputStream();
                     if (outsocket != null) {
@@ -175,4 +200,5 @@ public class SocketManagerSlave {
     public int checkStatus() {
         return mConnectionStatus;
     }
+
 }

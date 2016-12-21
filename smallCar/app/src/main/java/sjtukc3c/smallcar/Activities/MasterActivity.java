@@ -1,16 +1,33 @@
 package sjtukc3c.smallcar.Activities;
 
-import android.app.Activity;
-import android.hardware.Camera;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.astuetz.PagerSlidingTabStrip;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.net.ServerSocket;
 
+import sjtukc3c.smallcar.Fragments.MasterFragment;
+import sjtukc3c.smallcar.Fragments.RemoteStartFragment;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
 
@@ -18,19 +35,27 @@ import sjtukc3c.smallcar.R;
  * Created by Administrator on 2016/12/14.
  */
 public class MasterActivity
-        extends Activity
-        implements View.OnScrollChangeListener, View.OnTouchListener, View.OnClickListener{
+        extends AppCompatActivity
+        implements  View.OnClickListener{
 
-    private ImageView mBackButton;
-    private int mScrollX, mScrollWid;
-    private HorizontalScrollView mScrollView;
+
+
+    private Toolbar mToolbar;
+    private Drawable oldBackground;
+    private ViewPager mPager;
+    private PagerSlidingTabStrip mTab;
+    private MyAdapter mAdapter;
+    private SystemBarTintManager mTintManager;
+
+    private Thread mThread;
+
     private SurfaceView mSurfaceView;
+    private ImageView mBackButton;
 
     private int mPort = 15536;
 
 
     private ServerSocket mServerSocket;
-    private Camera mCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,55 +66,123 @@ public class MasterActivity
     }
 
     private void initView(){
-        mScrollView = (HorizontalScrollView)findViewById(R.id.master_scroll);
-        mScrollWid = mScrollView.getMeasuredWidth();
-        mScrollView.setOnScrollChangeListener(this);
-        mScrollView.setOnTouchListener(this);
 
-        mBackButton = (ImageView)findViewById(R.id.master_back);
+        mBackButton = (ImageView)findViewById(R.id.btn_master_go_back);
         mBackButton.setOnClickListener(this);
 
-        mSurfaceView = (SurfaceView)findViewById(R.id.master_surfaceview);
+        mSurfaceView = (SurfaceView)findViewById(R.id.sv_master);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        mPager = (ViewPager)findViewById(R.id.pager);
+
+        setSupportActionBar(mToolbar);
+
+
+
+        mTintManager = new SystemBarTintManager(this);
+        mTintManager.setStatusBarTintEnabled(true);
+        changeColor(ContextCompat.getColor(getBaseContext(), R.color.green));
+
+        mTab = (PagerSlidingTabStrip)findViewById(R.id.tabs);
+        mAdapter =  new MyAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mAdapter);
+        mPager.setCurrentItem(0);
+        mTab.setViewPager(mPager);
+
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+                .getDisplayMetrics());
+        mPager.setPageMargin(pageMargin);
+
+
+        mTab.setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+            @Override
+            public void onTabReselected(int i) {
+                Toast.makeText(MasterActivity.this, "Tab reselected: " + i, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initTool(){
-        Thread t = new SocketThreadMaster(mServerSocket, mSurfaceView, mPort);
-        t.start();
+        mThread = new SocketThreadMaster(mServerSocket, mSurfaceView, mPort);
+        mThread.start();
     }
 
-
-    @Override
-    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        mScrollX = scrollX;
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        switch (v.getId()){
-            case R.id.master_scroll:
-                if (event.getAction() == MotionEvent.ACTION_UP){
-//                    Log.e("Lyy", "" + mScrollX);
-//                    if (mScrollX % mScrollWid < 0.2 * mScrollWid && mScrollX / mScrollWid >= 0){
-////                        mScrollX
-//
-//                    } else if (mScrollX % mScrollWid > 0.8 * mScrollWid);
-//                    mScrollView.setScrollX(((mScrollX + 0.2 )/mScrollWid * mScrollWid ));
-                }
-                break;
-            default:
-                break;
+    private void changeColor(int newColor) {
+        mTintManager.setTintColor(newColor);
+        // change ActionBar color just if an ActionBar is available
+        Drawable colorDrawable = new ColorDrawable(newColor);
+        Drawable bottomDrawable = new ColorDrawable(ContextCompat.getColor(getBaseContext(), android.R.color.transparent));
+        LayerDrawable ld = new LayerDrawable(new Drawable[]{colorDrawable, bottomDrawable});
+        if (oldBackground == null) {
+            getSupportActionBar().setBackgroundDrawable(ld);
+        } else {
+            TransitionDrawable td = new TransitionDrawable(new Drawable[]{oldBackground, ld});
+            getSupportActionBar().setBackgroundDrawable(td);
+            td.startTransition(200);
         }
-        return false;
+
+        oldBackground = ld;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.master, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_master_config:
+                RemoteStartFragment.newInstance().show(getSupportFragmentManager(), "RemoteStartFragment");
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.master_back:
+            case R.id.btn_master_go_back:
+
                 finish();
                 break;
             default:
                 break;
         }
+    }
+
+
+    private class MyAdapter extends FragmentPagerAdapter {
+
+        private final String[] TITLES = {"Normal", "Voice", "About"};
+
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return MasterFragment.newInstance(position);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Log.e("Lyy", "getPageTitle: " + TITLES[position]);
+            return TITLES[position] ;
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mThread.stop();
+
     }
 }

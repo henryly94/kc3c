@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/light_gray">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/slave_btn_begin"
-            android:text="Begin"
-            android:layout_weight="1"
+        <ImageView
+            android:padding="10dp"
+            android:id="@+id/btn_slave_go_back"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/back"
+            android:background="@color/green"/>
 
-        <Button
-            android:id="@+id/slave_btn_end"
-            android:text="End"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
+        <include layout="@layout/toolbar" />
     </LinearLayout>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/slave_etv"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
 
-</RelativeLayout>
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/slave_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <android.support.v4.view.ViewPager
+        android:layout_below="@+id/slave_tabs"
+        android:id="@+id/slave_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
+
+
+</LinearLayout>
