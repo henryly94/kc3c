@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -68,14 +69,14 @@ public class BluetoothManager {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // Add the name and address to an array adapter to show in a ListView
                 Log.e(DEBUG_TAG, device.getName() + ": " + device.getAddress());
-                if (device.getName().equals(mTargetName)){
+                if (mTargetName.equals(device.getName())){
+                    Toast.makeText(mContext, String.format("Find target device: %s!", device.getName()), Toast.LENGTH_SHORT).show();
                     Log.e(DEBUG_TAG, "Find Target Device!");
                     mDevice = mBluetoothAdapater.getRemoteDevice(device.getAddress());
                     mContext.unregisterReceiver(this);
                     enabled = true;
                     mBluetoothAdapater.cancelDiscovery();
                 }
-
             }
         }
     };

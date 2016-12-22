@@ -167,6 +167,7 @@ public class SocketManagerSlave {
 
         public void run() {
             try {
+                long curTime = (new Date(System.currentTimeMillis())).getTime() % Integer.MAX_VALUE;
                 Socket tempSocket = new Socket(ipname, port);
                 if (tempSocket != null) {
                     outsocket = tempSocket.getOutputStream();
@@ -174,6 +175,9 @@ public class SocketManagerSlave {
                         ByteArrayInputStream inputstream = new ByteArrayInputStream(
                                 myoutputstream.toByteArray());
                         int amount;
+                        byte[] a = String.format("%016d", (int)curTime).getBytes();
+                        Log.e("Lyy", "Test a length: " + new String(a) + " | "+ a.length);
+                        outsocket.write(a);
                         while ((amount = inputstream.read(byteBuffer)) != -1) {
                             outsocket.write(byteBuffer, 0, amount);
                         }

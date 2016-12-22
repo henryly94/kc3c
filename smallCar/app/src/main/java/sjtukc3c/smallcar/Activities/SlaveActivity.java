@@ -156,22 +156,31 @@ public class SlaveActivity extends AppCompatActivity
                         Log.e("Lyy", "ServerPort setup on port: " + cmdPort);
                     }
                     Log.e("Lyy", "" + mCmdThreadEnd);
+                    Socket mmSocket = null;
                     // TODO: 2016/12/22 ServerSocket好像只能接受一次命令，怀疑可能是被阻塞 
                     while (!mCmdThreadEnd){
                         Log.e("Lyy", "CmdThread Running");
                         Log.e("Lyy", mServerSocket.isClosed() + " | " +mServerSocket.isBound() + " | " +  mServerSocket.getLocalPort());
-                        Socket s = mServerSocket.accept();
+                        if (mmSocket == null || !mmSocket.isConnected() || mmSocket.isClosed()) {
+                            mmSocket = mServerSocket.accept();
+                        }
                         Log.e("Lyy", "CmdThread Get New Socket");
-                        if (s != null){
-                            DataInputStream dis = new DataInputStream(s.getInputStream());
-                            String json = dis.readUTF();
+                        if (mmSocket != null){
+                            DataInputStream dis = new DataInputStream(mmSocket.getInputStream());
+                            final String json = dis.readUTF();
                             Log.e("Lyy", "Receiving:" + json);
-                            try {
-                                handleJsonMessage(json);
-                            }catch (JSONException e){
-                                Log.e("Lyy", "|3| " + e.getMessage());
-                                e.printStackTrace();
-                            }
+                            Thread handleThread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        handleJsonMessage(json);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            handleThread.start();
+
                         } else {
                             Log.e("Lyy", "Null Socket");
                         }

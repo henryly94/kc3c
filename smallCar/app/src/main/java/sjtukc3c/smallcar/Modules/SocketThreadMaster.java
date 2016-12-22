@@ -14,11 +14,15 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2016/12/17.
  */
 public class SocketThreadMaster extends Thread{
+
+
+
     private ServerSocket serverSocket;
     private Canvas canvas;
     private Bitmap btp;
@@ -94,6 +98,8 @@ public class SocketThreadMaster extends Thread{
 
     public void run() {
         try {
+            int curTime = (int)((new Date(System.currentTimeMillis())).getTime() % Integer.MAX_VALUE);
+            Log.e("Lyy", "Start Time: " + curTime);
             running = true;
             while (running) {
                 if (serverSocket == null || serverSocket.isClosed()){
@@ -113,19 +119,28 @@ public class SocketThreadMaster extends Thread{
                     Log.e("Lyy", s.getInetAddress().getHostAddress() + " | " + s.getInetAddress().getHostName());
                     Log.e("Lyy", "S != null");
                     InputStream in = s.getInputStream();
-                    btp = BitmapFactory.decodeStream(in);
-                    Log.e("Lyy", btp.getWidth() + ", " + btp.getHeight());
-                    in.close();
-                    s.close();
-                    btp = Bitmap.createBitmap(btp, 0, 0, btp.getWidth(),btp.getHeight(), matrix, true);
-                    Log.e("Lyy", "My data: "+ mWidth + ", " + mHeight);
-                    Bitmap newBtp = Bitmap.createScaledBitmap(btp, mWidth, mHeight, false);
-                    Log.e("Lyy", newBtp.getWidth() + ", " + newBtp.getHeight());
-                    canvas = surfaceHolder.lockCanvas();
-                    canvas.drawBitmap(newBtp, 0, 0, null);
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-                    btp.recycle();
-                    newBtp.recycle();
+                    byte[] newTimeBytes = new byte[16];
+                    in.read(newTimeBytes, 0, 8);
+                    in.read(newTimeBytes, 8, 8);
+                    int newTime = Integer.parseInt(new String(newTimeBytes));
+                    Log.e("Lyy", "New Time: " + newTime);
+//                    in.skip(16);
+                    if (newTime > curTime) {
+                        curTime = newTime;
+                        btp = BitmapFactory.decodeStream(in);
+                        Log.e("Lyy", btp.getWidth() + ", " + btp.getHeight());
+                        in.close();
+                        s.close();
+                        btp = Bitmap.createBitmap(btp, 0, 0, btp.getWidth(), btp.getHeight(), matrix, true);
+                        Log.e("Lyy", "My data: " + mWidth + ", " + mHeight);
+                        Bitmap newBtp = Bitmap.createScaledBitmap(btp, mWidth, mHeight, false);
+                        Log.e("Lyy", newBtp.getWidth() + ", " + newBtp.getHeight());
+                        canvas = surfaceHolder.lockCanvas();
+                        canvas.drawBitmap(newBtp, 0, 0, null);
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+                        btp.recycle();
+                        newBtp.recycle();
+                    }
                 }
             }
 

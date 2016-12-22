@@ -66,11 +66,13 @@ public class MasterFragment extends Fragment
                 Button bk = (Button)rootView.findViewById(R.id.btn_master_back);
                 Button lt = (Button)rootView.findViewById(R.id.btn_master_left);
                 Button rt = (Button)rootView.findViewById(R.id.btn_master_right);
+                Button stop = (Button)rootView.findViewById(R.id.btn_master_stop);
 
                 fd.setOnClickListener(this);
                 bk.setOnClickListener(this);
                 lt.setOnClickListener(this);
                 rt.setOnClickListener(this);
+                stop.setOnClickListener(this);
 
 
                 break;
@@ -119,6 +121,8 @@ public class MasterFragment extends Fragment
             case R.id.btn_master_right:
                 mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
                 break;
+            case R.id.btn_master_stop:
+                mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
             case R.id.btn_master_voice:
                 break;
         }

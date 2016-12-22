@@ -21,7 +21,7 @@ public class RemoteCommandManager {
     public final static String CMD_BACK = "B";
     public final static String CMD_LEFT = "L";
     public final static String CMD_RIGHT = "R";
-    public final static String CMD_STOP = "S";
+    public final static String CMD_STOP = "P";
 
     private boolean enabled = false;
     private boolean connected = false;

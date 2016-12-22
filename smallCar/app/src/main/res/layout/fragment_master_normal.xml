@@ -42,6 +42,14 @@
             android:id="@+id/btn_master_back"
             android:layout_below="@+id/btn_master_left"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STOP"
+            android:id="@+id/btn_master_stop"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/btn_master_right" />
     </RelativeLayout>
 
 </RelativeLayout>
