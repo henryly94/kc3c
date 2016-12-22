@@ -5,6 +5,8 @@
     <color name="greenDark">#3E5F22</color>
     <color name="banana">#FFCC00</color>
 
+    <color name="dark">#616161</color>
+
     <color name="light_gray">#9E9E9E</color>
     <color name="pure_white">#F5F5F5</color>
 </resources>

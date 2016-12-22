@@ -28,7 +28,8 @@
 
         <activity
             android:name=".Activities.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,9 +37,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.MasterActivity"/>
-        <activity android:name=".Activities.SlaveActivity"/>
-        <activity android:name=".Activities.ConnectionActivity"/>
+        <activity android:name=".Activities.MasterActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".Activities.SlaveActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.ConnectionActivity"
+            android:screenOrientation="portrait"/>
 
 
     </application>

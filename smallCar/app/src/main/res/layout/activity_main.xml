@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/pure_white">
 
     <Button
         android:layout_width="140dp"
@@ -10,6 +11,8 @@
         android:id="@+id/btn_master"
         android:layout_alignTop="@+id/btn_slave"
         android:layout_marginLeft="20dp"
+        android:textColor="@color/dark"
+        android:shadowColor="@color/light_gray"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -18,6 +21,16 @@
         android:text="Slave"
         android:id="@+id/btn_slave"
         android:layout_marginRight="20dp"
+        android:textColor="@color/dark"
+        android:shadowColor="@color/light_gray"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/btn_quit"
+        android:src="@drawable/ic_quit"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

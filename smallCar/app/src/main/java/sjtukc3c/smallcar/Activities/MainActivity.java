@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import sjtukc3c.smallcar.R;
 
@@ -14,6 +15,7 @@ import sjtukc3c.smallcar.R;
 public class MainActivity extends Activity implements View.OnClickListener{
 
     private Button btn1, btn2;
+    private ImageView btn_quit;
 
 
     @Override
@@ -32,10 +34,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private void initView(){
         btn1 = (Button)findViewById(R.id.btn_master);
         btn2 = (Button)findViewById(R.id.btn_slave);
+        btn_quit = (ImageView)findViewById(R.id.btn_quit);
 
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
-
+        btn_quit.setOnClickListener(this);
     }
 
     @Override
@@ -55,6 +58,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 startActivity(toSlave);
                 break;
 
+            case R.id.btn_quit:
+                finishAffinity();
+                break;
             default:
                 break;
         }
