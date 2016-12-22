@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textSize="20dp"
-        android:text="Master ip"
+        android:text="Slave ip"
         android:gravity="center_vertical"/>
 
     <EditText
