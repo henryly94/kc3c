@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,12 +21,11 @@ import com.iflytek.cloud.SpeechEvent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import butterknife.ButterKnife;
-import sjtukc3c.smallcar.Modules.IVoiceDataPresenter;
+import sjtukc3c.smallcar.Constants.MyConstants;
 import sjtukc3c.smallcar.Modules.RemoteCommandManager;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
@@ -37,7 +35,6 @@ import sjtukc3c.smallcar.Utils.JsonParser;
  * Author: wenhao.zhu[weehowe.z@gmail.com]
  * Created on 8:36 PM 2016/12/17.
  */
-
 public class MasterFragment extends Fragment
         implements View.OnClickListener, View.OnTouchListener {
     private static String TAG = MasterFragment.class.getSimpleName();
@@ -47,14 +44,11 @@ public class MasterFragment extends Fragment
 
     private static int mPort = 15536;
 
-//    private ServerSocket mServerSocket;
+    //    private ServerSocket mServerSocket;
     private SocketThreadMaster mSocketThreadMaster;
-//    private SurfaceView mSurfaceView;
+    //    private SurfaceView mSurfaceView;
     private RemoteCommandManager mCommandManager;
 
-//    private IVoiceDataPresenter mVoiceDataPresenter;
-
-    // Print Reslut
     private TextView mResultText;
 
     // [IFLYTEK] VOICE OBJECT
@@ -62,10 +56,13 @@ public class MasterFragment extends Fragment
 
     private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
 
-    //ENGINE TYPE
-    private String mEngineType = SpeechConstant.TYPE_CLOUD;
 
-
+    /**
+     * New instance master fragment.
+     *
+     * @param p the p
+     * @return the master fragment
+     */
     public static MasterFragment newInstance(int p) {
         MasterFragment f = new MasterFragment();
         Bundle b = new Bundle();
@@ -130,6 +127,11 @@ public class MasterFragment extends Fragment
 
     }
 
+    /**
+     * Sets remote command manager.
+     *
+     * @param cmdmanager the cmdmanager
+     */
     public void setRemoteCommandManager(RemoteCommandManager cmdmanager) {
         mCommandManager = cmdmanager;
     }
@@ -141,7 +143,10 @@ public class MasterFragment extends Fragment
         }
     }
 
-    // used for callback, success or not
+    /**
+     * The Ret.
+     */
+// used for callback, success or not
     int ret = 0;
 
     @Override
@@ -161,6 +166,7 @@ public class MasterFragment extends Fragment
                 break;
             case R.id.btn_master_stop:
                 mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+
             case R.id.btn_master_voice:
 
                 mIatResults.clear();
@@ -170,7 +176,6 @@ public class MasterFragment extends Fragment
                 if (ret != ErrorCode.SUCCESS) {
                     Log.e(TAG, "Failed, error code is " + ret);
                 }
-
                 break;
         }
     }
@@ -180,7 +185,8 @@ public class MasterFragment extends Fragment
         switch (v.getId()) {
             case R.id.btn_master_voice:
                 if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
-
+                    // I cant get THIS event
+                    Log.e(TAG, "BUTTON_RELEASE_EVENT");
                 }
                 break;
             default:
@@ -223,10 +229,26 @@ public class MasterFragment extends Fragment
         @Override
         public void onResult(RecognizerResult recognizerResult, boolean isLast) {
             Log.d(TAG, recognizerResult.getResultString());
-//            mResultText.setText(recognizerResult.getResultString());
 
-            if (isLast) {
-                printResult(recognizerResult);
+            String result = getResult(recognizerResult);
+            mResultText.setText(result);
+
+            switch (result) {
+                case MyConstants.VOICE_FORWARD:
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
+                    break;
+                case MyConstants.VOICE_BACKWORD:
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
+                    break;
+                case MyConstants.VOICE_LEFT:
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
+                    break;
+                case MyConstants.VOICE_RIGHT:
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
+                    break;
+                case MyConstants.VOICE_STOP:
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+                    break;
             }
         }
 
@@ -246,8 +268,13 @@ public class MasterFragment extends Fragment
         }
     };
 
-    // Use default param setting
+    /**
+     * Sets param.
+     */
+// Use default param setting
     public void setParam() {
+
+        String mEngineType = SpeechConstant.TYPE_CLOUD;
 
         mIat.setParameter(SpeechConstant.PARAMS, null);
         mIat.setParameter(SpeechConstant.ENGINE_TYPE, mEngineType);
@@ -272,7 +299,7 @@ public class MasterFragment extends Fragment
         mIat.destroy();
     }
 
-    private void printResult(RecognizerResult results) {
+    private String getResult(RecognizerResult results) {
         String text = JsonParser.parseResult(results.getResultString());
         String sn = null;
 
@@ -290,7 +317,7 @@ public class MasterFragment extends Fragment
             resultBuffer.append(mIatResults.get(key));
         }
 
-        mResultText.setText(resultBuffer.toString());
+        return resultBuffer.toString();
     }
 }
 
