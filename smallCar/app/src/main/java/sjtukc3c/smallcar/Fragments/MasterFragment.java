@@ -64,7 +64,22 @@ public class MasterFragment extends Fragment
      * @return the master fragment
      */
     public static MasterFragment newInstance(int p) {
-        MasterFragment f = new MasterFragment();
+
+        MasterFragment f = null;
+
+
+        //TODO: 有新的Fragment， 按照position，添加一个case， 新建一个对应fragment类传递给f，理解成注册新函数
+        switch (p){
+            case 1:
+                f = new VoiceFragment();
+                break;
+
+            default:
+                f = new MasterFragment();
+                break;
+
+        }
+
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, p);
         f.setArguments(b);
@@ -101,15 +116,6 @@ public class MasterFragment extends Fragment
                 lt.setOnClickListener(this);
                 rt.setOnClickListener(this);
                 stop.setOnClickListener(this);
-
-                break;
-
-            case 1:
-                rootView = inflater.inflate(R.layout.fragment_master_voice, container, false);
-                mResultText = (TextView) rootView.findViewById(R.id.voice_text);
-                com.gc.materialdesign.views.Button voice = (com.gc.materialdesign.views.Button) rootView.findViewById(R.id.btn_master_voice);
-                voice.setOnClickListener(this);
-                voice.setOnTouchListener(this);
 
                 break;
 
