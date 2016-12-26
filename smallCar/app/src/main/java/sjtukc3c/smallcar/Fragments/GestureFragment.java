@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import sjtukc3c.smallcar.R;
 
-public class GestureFragment extends Fragment {
+public class GestureFragment extends MasterFragment {
     private int x1;
     private int x2;
     private int y1;
