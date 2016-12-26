@@ -38,7 +38,7 @@ import sjtukc3c.smallcar.R;
  */
 public class MasterActivity
         extends AppCompatActivity
-        implements  View.OnClickListener{
+        implements View.OnClickListener {
 
     // TODO: 2016/12/22 点多任务按键会崩溃，怀疑要在onPause处理，点back也会崩溃
 
@@ -68,25 +68,24 @@ public class MasterActivity
         initTool();
     }
 
-    private void initView(){
+    private void initView() {
 
-        mBackButton = (ImageView)findViewById(R.id.btn_master_go_back);
+        mBackButton = (ImageView) findViewById(R.id.btn_master_go_back);
         mBackButton.setOnClickListener(this);
 
-        mSurfaceView = (SurfaceView)findViewById(R.id.sv_master);
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        mPager = (ViewPager)findViewById(R.id.pager);
+        mSurfaceView = (SurfaceView) findViewById(R.id.sv_master);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mPager = (ViewPager) findViewById(R.id.pager);
 
         setSupportActionBar(mToolbar);
-
 
 
         mTintManager = new SystemBarTintManager(this);
         mTintManager.setStatusBarTintEnabled(true);
         changeColor(ContextCompat.getColor(getBaseContext(), R.color.green));
 
-        mTab = (PagerSlidingTabStrip)findViewById(R.id.tabs);
-        mAdapter =  new MyAdapter(getSupportFragmentManager());
+        mTab = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        mAdapter = new MyAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
         mPager.setCurrentItem(0);
         mTab.setViewPager(mPager);
@@ -105,7 +104,7 @@ public class MasterActivity
 
     }
 
-    private void initTool(){
+    private void initTool() {
         mCommandManger = new RemoteCommandManager(this);
         mThread = new SocketThreadMaster(mServerSocket, mSurfaceView, mPort, mCommandManger);
         Log.e("Lyy", "Even here");
@@ -128,6 +127,7 @@ public class MasterActivity
         }
         oldBackground = ld;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.master, menu);
@@ -146,10 +146,9 @@ public class MasterActivity
     }
 
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_master_go_back:
                 finish();
                 break;
@@ -161,7 +160,7 @@ public class MasterActivity
 
     private class MyAdapter extends FragmentPagerAdapter {
 
-        private final String[] TITLES = {"Normal", "Voice", "About"};
+        private final String[] TITLES = {"Normal", "Voice", "Gesture", "Gravity", "About"};
 
         public MyAdapter(FragmentManager fm) {
             super(fm);
@@ -177,7 +176,7 @@ public class MasterActivity
         @Override
         public CharSequence getPageTitle(int position) {
             Log.e("Lyy", "getPageTitle: " + TITLES[position]);
-            return TITLES[position] ;
+            return TITLES[position];
         }
 
         @Override
@@ -188,9 +187,9 @@ public class MasterActivity
 
     @Override
     protected void onDestroy() {
-        ((SocketThreadMaster)mThread).stopit();
-        try{
-            if (mServerSocket != null && !mServerSocket.isClosed()){
+        ((SocketThreadMaster) mThread).stopit();
+        try {
+            if (mServerSocket != null && !mServerSocket.isClosed()) {
                 mServerSocket.close();
             }
         } catch (IOException e) {

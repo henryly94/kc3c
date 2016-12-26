@@ -12,23 +12,23 @@
         android:stretchColumns="1">
         <TableRow>
             <TextView
-                android:text="Yiyang Li"
-                android:textSize="20dp"
+                android:text="@string/yiyang_li"
+                android:textSize="20sp"
                 android:padding="5dp"/>
             <TextView
-                android:textSize="20dp"
-                android:text="henryly94@gmail.com"
+                android:textSize="20sp"
+                android:text="@string/henryly94_gmail_com"
                 android:padding="5dp"/>
         </TableRow>
 
         <TableRow>
             <TextView
-                android:textSize="20dp"
-                android:text="Wenhao Zhu"
+                android:textSize="20sp"
+                android:text="@string/wenhao_zhu"
                 android:padding="5dp"/>
             <TextView
-                android:textSize="20dp"
-                android:text="Weehow.z@gmail.com"
+                android:textSize="20sp"
+                android:text="@string/weehow_z_gmail_com"
                 android:padding="5dp"/>
         </TableRow>
     </TableLayout>

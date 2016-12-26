@@ -4,24 +4,14 @@
     android:layout_height="match_parent">
 
 
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:id="@+id/btn_master_voice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
-        android:background="#1E88E5"
-        android:text="Command" />
-
     <TextView
-        android:id="@+id/voice_text"
+        android:id="@+id/gesture_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="159dp"
-        android:text="Voice"
+        android:text="@string/instruction"
         android:textColor="@color/pure_white" />
 
 </RelativeLayout>
