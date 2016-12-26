@@ -1,9 +1,13 @@
 package sjtukc3c.smallcar.Fragments;
 
+import android.content.Context;
 import android.graphics.Point;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -13,7 +17,6 @@ import android.view.Window;
 import android.widget.EditText;
 
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.Socket;
 
 import sjtukc3c.smallcar.R;
@@ -28,6 +31,7 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
 
     FragmentListener mFragmentListener;
     private EditText et;
+    private String MyIp;
     private int mPort = 15536;
     public interface FragmentListener{
         void send();
@@ -47,7 +51,7 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
         }
 
         ViewGroup root = (ViewGroup)inflater.inflate(R.layout.fragment_master_config, container, false);
-
+        MyIp = getWIFILocalIpAdress((WifiManager)root.getContext().getSystemService(Context.WIFI_SERVICE));
         android.widget.Button btn =  (android.widget.Button)root.findViewById(R.id.btn_master_remote);
         btn.setOnClickListener(this);
         et = (EditText)root.findViewById(R.id.et_master_remote);
@@ -83,31 +87,49 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
 
     private void sendRequest(){
         final String ip = et.getText().toString();
-        final int port = mPort;
+        final int port = mPort + 10;
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Socket s = new Socket(ip, port);
                     DataOutputStream out = new DataOutputStream(s.getOutputStream());
-                    String json = String.format("{\"cmd\":\"Connect\",\"Ip\":\"%s\",\"Port\":%d}",
-                            ip, mPort);
-                    out.writeChars(
-                            json
+                    String json = String.format(
+                            "{\"cmd\":\"Connect\",\"Ip\":\"%s\",\"Port\":%d}",
+                            MyIp,
+                            mPort
                     );
+                    out.writeUTF(json);
+                    Log.e("Lyy", "Sending: " + json);
                     out.flush();
                     out.close();
                     s.close();
-                } catch (IOException e){
+                } catch (Exception e){
                     e.printStackTrace();
                 }
-
-
             }
         });
         th.start();
     }
 
+    private String getWIFILocalIpAdress(WifiManager mWifiManager) {
+
+        //获取wifi服务
+        //判断wifi是否开启
+        if (mWifiManager.isWifiEnabled()) {
+            mWifiManager.setWifiEnabled(true);
+        }
+        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
+        int ipAddress = wifiInfo.getIpAddress();
+        String ip = formatIpAddress(ipAddress);
+        return ip;
+    }
+    private static String formatIpAddress(int ipAdress) {
+        return (ipAdress & 0xFF ) + "." +
+                ((ipAdress >> 8 ) & 0xFF) + "." +
+                ((ipAdress >> 16 ) & 0xFF) + "." +
+                ( ipAdress >> 24 & 0xFF) ;
+    }
 
     @Override
     public void onClick(View v) {
@@ -118,6 +140,5 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
             default:
                 break;
         }
-
     }
 }

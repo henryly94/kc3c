@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_master_config"
-        android:icon="@drawable/ic_config"
+        android:icon="@drawable/ic_connect"
         app:showAsAction="always"
         android:title="@string/menu_master_config"/>
 </menu>

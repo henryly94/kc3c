@@ -13,8 +13,8 @@ import android.widget.TextView;
 import java.net.ServerSocket;
 
 import butterknife.ButterKnife;
-import sjtukc3c.smallcar.Modules.CommandManager;
 import sjtukc3c.smallcar.Modules.IVoiceDataPresenter;
+import sjtukc3c.smallcar.Modules.RemoteCommandManager;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
 
@@ -31,16 +31,13 @@ public class MasterFragment extends Fragment
     private ServerSocket mServerSocket;
     private SocketThreadMaster mSocketThreadMaster;
     private SurfaceView mSurfaceView;
+    private RemoteCommandManager mCommandManager;
 
     private TextView mTextView;
 
 
     private IVoiceDataPresenter mVoiceDataPresenter;
 
-
-
-    private CommandManager mCommandManager;
-//    private
 
     public static MasterFragment newInstance(int p){
         MasterFragment f = new MasterFragment();
@@ -55,10 +52,6 @@ public class MasterFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
-
-        // null & -1 is for default config(target_host, target_port)
-        mCommandManager = new CommandManager(null, -1);
-
     }
 
 //    @Nullable
@@ -73,11 +66,13 @@ public class MasterFragment extends Fragment
                 Button bk = (Button)rootView.findViewById(R.id.btn_master_back);
                 Button lt = (Button)rootView.findViewById(R.id.btn_master_left);
                 Button rt = (Button)rootView.findViewById(R.id.btn_master_right);
+                Button stop = (Button)rootView.findViewById(R.id.btn_master_stop);
 
                 fd.setOnClickListener(this);
                 bk.setOnClickListener(this);
                 lt.setOnClickListener(this);
                 rt.setOnClickListener(this);
+                stop.setOnClickListener(this);
 
 
                 break;
@@ -100,6 +95,10 @@ public class MasterFragment extends Fragment
 
     }
 
+    public void setRemoteCommandManager(RemoteCommandManager cmdmanager){
+        mCommandManager = cmdmanager;
+    }
+
     private void checkThread(){
         if (mSocketThreadMaster != null){
             mSocketThreadMaster.stop();
@@ -111,17 +110,19 @@ public class MasterFragment extends Fragment
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_master_foward:
-                mCommandManager.sendCommand(CommandManager.CMD_FOWARD);
+                mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
                 break;
             case R.id.btn_master_back:
-                mCommandManager.sendCommand(CommandManager.CMD_BACK);
+                mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
                 break;
             case R.id.btn_master_left:
-                mCommandManager.sendCommand(CommandManager.CMD_LEFT);
+                mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
                 break;
             case R.id.btn_master_right:
-                mCommandManager.sendCommand(CommandManager.CMD_RIGHT);
+                mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
                 break;
+            case R.id.btn_master_stop:
+                mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
             case R.id.btn_master_voice:
                 break;
         }

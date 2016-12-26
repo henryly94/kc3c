@@ -24,10 +24,12 @@ import android.widget.Toast;
 import com.astuetz.PagerSlidingTabStrip;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 
 import sjtukc3c.smallcar.Fragments.MasterFragment;
 import sjtukc3c.smallcar.Fragments.RemoteStartFragment;
+import sjtukc3c.smallcar.Modules.RemoteCommandManager;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
 
@@ -38,7 +40,7 @@ public class MasterActivity
         extends AppCompatActivity
         implements  View.OnClickListener{
 
-
+    // TODO: 2016/12/22 点多任务按键会崩溃，怀疑要在onPause处理，点back也会崩溃
 
     private Toolbar mToolbar;
     private Drawable oldBackground;
@@ -55,6 +57,7 @@ public class MasterActivity
     private int mPort = 15536;
 
 
+    private RemoteCommandManager mCommandManger;
     private ServerSocket mServerSocket;
 
     @Override
@@ -103,9 +106,12 @@ public class MasterActivity
     }
 
     private void initTool(){
-        mThread = new SocketThreadMaster(mServerSocket, mSurfaceView, mPort);
+        mCommandManger = new RemoteCommandManager(this);
+        mThread = new SocketThreadMaster(mServerSocket, mSurfaceView, mPort, mCommandManger);
+        Log.e("Lyy", "Even here");
         mThread.start();
     }
+
 
     private void changeColor(int newColor) {
         mTintManager.setTintColor(newColor);
@@ -120,7 +126,6 @@ public class MasterActivity
             getSupportActionBar().setBackgroundDrawable(td);
             td.startTransition(200);
         }
-
         oldBackground = ld;
     }
     @Override
@@ -134,6 +139,7 @@ public class MasterActivity
         switch (item.getItemId()) {
             case R.id.menu_master_config:
                 RemoteStartFragment.newInstance().show(getSupportFragmentManager(), "RemoteStartFragment");
+
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -145,7 +151,6 @@ public class MasterActivity
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_master_go_back:
-
                 finish();
                 break;
             default:
@@ -164,7 +169,9 @@ public class MasterActivity
 
         @Override
         public Fragment getItem(int position) {
-            return MasterFragment.newInstance(position);
+            MasterFragment fragment = MasterFragment.newInstance(position);
+            fragment.setRemoteCommandManager(mCommandManger);
+            return fragment;
         }
 
         @Override
@@ -181,8 +188,15 @@ public class MasterActivity
 
     @Override
     protected void onDestroy() {
+        ((SocketThreadMaster)mThread).stopit();
+        try{
+            if (mServerSocket != null && !mServerSocket.isClosed()){
+                mServerSocket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
-        mThread.stop();
 
     }
 }
