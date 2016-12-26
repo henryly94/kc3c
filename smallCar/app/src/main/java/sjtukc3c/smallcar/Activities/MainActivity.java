@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
+
 import sjtukc3c.smallcar.R;
 
 /**
@@ -27,6 +30,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 //        Intent intent = new Intent(MainActivity.this, MasterActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        startActivity(intent);
+
+        // iflytek ASR init
+        SpeechUtility.createUtility(this, SpeechConstant.APPID+"=58510279");
 
         initView();
     }
