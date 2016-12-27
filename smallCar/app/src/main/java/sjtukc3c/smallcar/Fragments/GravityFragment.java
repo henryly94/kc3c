@@ -8,7 +8,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -37,18 +36,12 @@ public class GravityFragment extends MasterFragment {
     private SocketThreadMaster mSocketThreadMaster;
     private RemoteCommandManager mCommandManager;
 
-    private int x1;
-    private int x2;
-    private int y1;
-    private int y2;
-
     private TextView mResutText;
     private TextView mResutText_Ins;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("happy", "GravityFragment");
         View view = inflater.inflate(R.layout.fragment_master_gravity, container, false);
         mResutText = (TextView) view.findViewById(R.id.gravity_text);
         mResutText_Ins = (TextView) view.findViewById(R.id.gravity_text_instruction);
@@ -71,19 +64,19 @@ public class GravityFragment extends MasterFragment {
 
                 if ((y < -4) && (x > -2) && (x < 2)) {
                     mResutText_Ins.setText(MyConstants.INSTRUCTION_FORWARD);
-//                    mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
                 } else if ((y > 4) && (x > -2) && (x < 2)) {
                     mResutText_Ins.setText(MyConstants.INSTRUCTION_BACKWORD);
-//                    mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
                 } else if ((x > 4) && (y < 2) && (y > -2)) {
                     mResutText_Ins.setText(MyConstants.INSTRUCTION_LEFT);
-//                    mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
                 } else if ((x < -4) && (y < 2) && (y > -2)) {
                     mResutText_Ins.setText(MyConstants.INSTRUCTION_RIGHT);
-//                    mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
                 } else {
                     mResutText_Ins.setText(MyConstants.INSTRUCTION_STOP);
-//                    mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+                    mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
                 }
             }
 
@@ -100,11 +93,11 @@ public class GravityFragment extends MasterFragment {
     }
 
 
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroy();
-//        sensorManager.unregisterListener(sensorEventListener, gravitySensor);
-//    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroy();
+        sensorManager.unregisterListener(sensorEventListener, gravitySensor);
+    }
 
     public void setRemoteCommandManager(RemoteCommandManager cmdmanager) {
         mCommandManager = cmdmanager;

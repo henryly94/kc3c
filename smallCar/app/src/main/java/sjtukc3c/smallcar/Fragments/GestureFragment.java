@@ -1,9 +1,7 @@
 package sjtukc3c.smallcar.Fragments;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
+import sjtukc3c.smallcar.Activities.MainActivity;
+import sjtukc3c.smallcar.Activities.MasterActivity;
 import sjtukc3c.smallcar.Constants.MyConstants;
 import sjtukc3c.smallcar.Modules.RemoteCommandManager;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
@@ -34,6 +34,7 @@ public class GestureFragment extends MasterFragment {
 
     private TextView mResutText;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,9 +43,23 @@ public class GestureFragment extends MasterFragment {
 
         View view = inflater.inflate(R.layout.fragment_master_gesture, container, false);
         mResutText = (TextView) view.findViewById(R.id.gesture_text);
+
+
+
         mResutText.setOnTouchListener(new OnTouchListener() {
+
+
             @Override
             public boolean onTouch(View v, MotionEvent e) {
+
+                mResutText.setText("there is touch");
+
+
+
+                mResutText.setFocusable(true);
+                mResutText.setFocusableInTouchMode(true);
+                mResutText.requestFocus();
+
                 switch (e.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         x1 = (int) e.getX();
@@ -62,9 +77,11 @@ public class GestureFragment extends MasterFragment {
                         } else if (x1 - x2 > 100) {
                             mResutText.setText(MyConstants.INSTRUCTION_LEFT);
                             Log.i(TAG, "onTouch: left");
+                            if (mResutText.isFocused()) Log.e(TAG, "onTouch: is focused");
                         } else if (x2 - x1 > 100) {
                             mResutText.setText(MyConstants.INSTRUCTION_RIGHT);
                             Log.i(TAG, "onTouch: right");
+                            if (mResutText.isFocused()) Log.e(TAG, "onTouch: is focused");
                         } else if (((x1 - x2) < 10 || (x2 - x1) < 10) && ((y1 - y2) < 10 || (y2 - y1) < 10)) {
                             mResutText.setText(MyConstants.INSTRUCTION_STOP);
                             Log.i(TAG, "onTouch: stop");
@@ -79,6 +96,5 @@ public class GestureFragment extends MasterFragment {
         ButterKnife.bind(this, view);
         return view;
     }
-
 
 }

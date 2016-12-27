@@ -34,7 +34,8 @@ import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
 
 /**
- * Created by Administrator on 2016/12/14.
+ * Author: wenhao.zhu[weehowe.z@gmail.com]
+ * Created on 1:25 AM 2016/12/14.
  */
 public class MasterActivity
         extends AppCompatActivity
@@ -78,7 +79,6 @@ public class MasterActivity
         mPager = (ViewPager) findViewById(R.id.pager);
 
         setSupportActionBar(mToolbar);
-
 
         mTintManager = new SystemBarTintManager(this);
         mTintManager.setStatusBarTintEnabled(true);
