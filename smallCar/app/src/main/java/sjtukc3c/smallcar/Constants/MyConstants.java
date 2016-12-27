@@ -21,10 +21,10 @@ public class MyConstants {
 
     public final static String VALUE_LOCAL_IP = "192.168.31.248";
 
-    public final static String VOICE_FORWARD = "前进";
-    public final static String VOICE_BACKWORD = "后退";
-    public final static String VOICE_LEFT = "左转";
-    public final static String VOICE_RIGHT = "右转";
-    public final static String VOICE_STOP = "暂停";
+    public final static String INSTRUCTION_FORWARD = "前进";
+    public final static String INSTRUCTION_BACKWORD = "后退";
+    public final static String INSTRUCTION_LEFT = "左转";
+    public final static String INSTRUCTION_RIGHT = "右转";
+    public final static String INSTRUCTION_STOP = "停止";
 
 }

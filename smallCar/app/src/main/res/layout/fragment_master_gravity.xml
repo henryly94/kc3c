@@ -5,13 +5,23 @@
 
 
     <TextView
-        android:id="@+id/gesture_text"
+        android:id="@+id/gravity_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="159dp"
-        android:text="@string/gesture"
+        android:text="@string/gravity"
         android:textColor="@color/pure_white" />
 
+
+    <TextView
+        android:id="@+id/gravity_text_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/instruction"
+        android:textColor="@color/pure_white"
+        android:layout_below="@+id/gravity_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp" />
 </RelativeLayout>
