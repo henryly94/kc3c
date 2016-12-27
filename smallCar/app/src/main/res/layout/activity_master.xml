@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tool:context=".MasterActivity">
 
     <LinearLayout
@@ -15,12 +14,12 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:padding="10dp"
             android:id="@+id/btn_master_go_back"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_back"
-            android:background="@color/green"/>
+            android:background="@color/green"
+            android:padding="10dp"
+            android:src="@drawable/ic_back" />
 
         <include layout="@layout/toolbar" />
     </LinearLayout>
@@ -28,25 +27,31 @@
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
-        android:layout_below="@+id/linear_master"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_below="@+id/linear_master"
         android:background="?attr/colorPrimary" />
 
 
     <SurfaceView
-        android:layout_below="@id/tabs"
+        android:id="@+id/sv_master"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:id="@+id/sv_master" />
+        android:layout_below="@id/tabs"
+        android:layout_margin="5dp" />
 
-    <android.support.v4.view.ViewPager
-        android:layout_below="@+id/tabs"
+    <!--<android.support.v4.view.ViewPager-->
+    <!--android:layout_below="@+id/tabs"-->
+    <!--android:id="@+id/pager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+    <!--</android.support.v4.view.ViewPager>-->
+
+
+    <sjtukc3c.smallcar.Utils.CustomViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
-
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabs" />
 
 </RelativeLayout>
