@@ -16,6 +16,10 @@ public class CommandManager {
     public final static String CMD_LEFT = "L";
     public final static String CMD_RIGHT = "R";
 
+    private final static int MAX_RECONNECT_AMOUNT = 10;
+    private static int reconnect_count = 0;
+
+    private static boolean mutex = false;
 
     private static String mSlaveHost = "192.168.31.248";
     private static int mSlavePort = 15536;
@@ -43,14 +47,32 @@ public class CommandManager {
     }
 
     private void buildUpConnection(){
+        reconnect_count += 1;
+        if (reconnect_count > MAX_RECONNECT_AMOUNT && !mutex){
+            mutex = true;
+            Thread th = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(10000);
+                        reconnect_count = 0;
+                        mutex = false;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            th.start();
+            return;
+        }
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     mSocket = new Socket(mSlaveHost, mSlavePort);
                     mSocket.sendUrgentData(0);
+                    reconnect_count = 0;
                 } catch (IOException e){
-
                     e.printStackTrace();
                 }
             }
