@@ -45,16 +45,13 @@ public class GestureFragment extends MasterFragment {
         mResutText = (TextView) view.findViewById(R.id.gesture_text);
 
 
-
         mResutText.setOnTouchListener(new OnTouchListener() {
 
 
             @Override
             public boolean onTouch(View v, MotionEvent e) {
 
-                mResutText.setText("there is touch");
-
-
+                mResutText.setText("touch");
 
                 mResutText.setFocusable(true);
                 mResutText.setFocusableInTouchMode(true);
@@ -70,20 +67,29 @@ public class GestureFragment extends MasterFragment {
                         y2 = (int) e.getY();
                         if (y1 - y2 > 100) {
                             mResutText.setText(MyConstants.INSTRUCTION_FORWARD);
+                            mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
                             Log.i(TAG, "onTouch: forward");
                         } else if (y2 - y1 > 100) {
                             mResutText.setText(MyConstants.INSTRUCTION_BACKWORD);
+                            mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
+
                             Log.i(TAG, "onTouch: backward");
                         } else if (x1 - x2 > 100) {
                             mResutText.setText(MyConstants.INSTRUCTION_LEFT);
+                            mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
+
                             Log.i(TAG, "onTouch: left");
                             if (mResutText.isFocused()) Log.e(TAG, "onTouch: is focused");
                         } else if (x2 - x1 > 100) {
                             mResutText.setText(MyConstants.INSTRUCTION_RIGHT);
+                            mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
+
                             Log.i(TAG, "onTouch: right");
                             if (mResutText.isFocused()) Log.e(TAG, "onTouch: is focused");
                         } else if (((x1 - x2) < 10 || (x2 - x1) < 10) && ((y1 - y2) < 10 || (y2 - y1) < 10)) {
                             mResutText.setText(MyConstants.INSTRUCTION_STOP);
+                            mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+
                             Log.i(TAG, "onTouch: stop");
                         }
                         break;

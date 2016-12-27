@@ -20,12 +20,10 @@ public class CustomViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    //当事件发生在textview上不会响应页面滑动
     @Override
     protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-        if(v instanceof TextView){
-            return true;
-        }
-        return super.canScroll(v, checkV, dx, x, y);
+        return v instanceof TextView || super.canScroll(v, checkV, dx, x, y);
     }
 
 }
