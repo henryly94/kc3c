@@ -42,7 +42,7 @@ public class BluetoothManager {
         @Override
         public void run() {
 
-            while(true) {
+            while (true) {
                 try {
                     Thread.sleep(100);
                     if (enabled) {
@@ -51,7 +51,7 @@ public class BluetoothManager {
                         mHandler.sendMessage(msg);
                         break;
                     }
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -69,7 +69,7 @@ public class BluetoothManager {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // Add the name and address to an array adapter to show in a ListView
                 Log.e(DEBUG_TAG, device.getName() + ": " + device.getAddress());
-                if (mTargetName.equals(device.getName())){
+                if (mTargetName.equals(device.getName())) {
                     Toast.makeText(mContext, String.format("Find target device: %s!", device.getName()), Toast.LENGTH_SHORT).show();
                     Log.e(DEBUG_TAG, "Find Target Device!");
                     mDevice = mBluetoothAdapater.getRemoteDevice(device.getAddress());
@@ -82,16 +82,15 @@ public class BluetoothManager {
     };
 
 
-
-    public BluetoothManager(Context context, Handler handler){
+    public BluetoothManager(Context context, Handler handler) {
         mContext = context;
         mHandler = handler;
         listener.start();
         mBluetoothAdapater = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapater != null){
+        if (mBluetoothAdapater != null) {
 
             // 不许点"否"
-            while (!mBluetoothAdapater.isEnabled()){
+            while (!mBluetoothAdapater.isEnabled()) {
                 Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 mContext.startActivity(enableIntent);
             }
@@ -104,13 +103,13 @@ public class BluetoothManager {
     }
 
 
-    public void buildUp(){
+    public void buildUp() {
         ConnectThread th = new ConnectThread(mDevice);
         th.start();
     }
 
 
-    public void sendMessage(String cmd){
+    public void sendMessage(String cmd) {
         // TODO: 2016/12/22 此处connected值可能为false 
         Log.e("Lyy", "Bluetooth Sending: " + cmd);
         try {
@@ -123,8 +122,8 @@ public class BluetoothManager {
     }
 
 
-    public void close(){
-        if (mSocket != null && mSocket.isConnected()){
+    public void close() {
+        if (mSocket != null && mSocket.isConnected()) {
             try {
                 mSocket.close();
                 connected = false;
@@ -136,11 +135,11 @@ public class BluetoothManager {
     }
 
 
-    private class ConnectThread extends Thread{
-        public ConnectThread(BluetoothDevice device){
+    private class ConnectThread extends Thread {
+        public ConnectThread(BluetoothDevice device) {
             mDevice = device;
             mSocket = null;
-            try{
+            try {
                 mSocket = device.createRfcommSocketToServiceRecord(MyUUID);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -149,10 +148,10 @@ public class BluetoothManager {
 
         @Override
         public void run() {
-            if (mBluetoothAdapater.isDiscovering()){
+            if (mBluetoothAdapater.isDiscovering()) {
                 mBluetoothAdapater.cancelDiscovery();
             }
-            try{
+            try {
                 mSocket.connect();
                 enabled = true;
             } catch (IOException e) {
@@ -161,7 +160,6 @@ public class BluetoothManager {
 
         }
     }
-
 
 
 }

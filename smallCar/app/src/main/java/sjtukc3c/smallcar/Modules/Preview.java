@@ -32,8 +32,10 @@ public class Preview extends ViewGroup implements SurfaceHolder.Callback {
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-    public void setCamera(Camera camera){
-        if (mCamera == camera) { return; }
+    public void setCamera(Camera camera) {
+        if (mCamera == camera) {
+            return;
+        }
 
 //        stopPreviewAndFreeCamera();
 

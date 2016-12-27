@@ -1,7 +1,6 @@
 package sjtukc3c.smallcar.Fragments;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,12 +10,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
-import sjtukc3c.smallcar.Activities.MainActivity;
-import sjtukc3c.smallcar.Activities.MasterActivity;
 import sjtukc3c.smallcar.Constants.MyConstants;
 import sjtukc3c.smallcar.Modules.RemoteCommandManager;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
+
+/**
+ * Author: wenhao.zhu[weehowe.z@gmail.com]
+ * Created on 8:38 PM 12/27/16.
+ */
 
 public class GestureFragment extends MasterFragment {
 
@@ -101,6 +103,17 @@ public class GestureFragment extends MasterFragment {
 
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    public void setRemoteCommandManager(RemoteCommandManager cmdmanager) {
+        mCommandManager = cmdmanager;
+    }
+
+    private void checkThread() {
+        if (mSocketThreadMaster != null) {
+            mSocketThreadMaster.stop();
+            mSocketThreadMaster = null;
+        }
     }
 
 }

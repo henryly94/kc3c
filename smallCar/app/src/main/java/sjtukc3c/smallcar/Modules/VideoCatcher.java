@@ -20,22 +20,21 @@ public class VideoCatcher {
     private MediaRecorder mMediaRecorder;
 
 
-    public VideoCatcher(Context context){
+    public VideoCatcher(Context context) {
         mContext = context;
-        if (!checkCameraHardware()){
+        if (!checkCameraHardware()) {
             Toast.makeText(mContext, mContext.getString(R.string.no_camera), Toast.LENGTH_SHORT).show();
             return;
         }
-        mCameraManager = (CameraManager)context.getSystemService(Context.CAMERA_SERVICE);
+        mCameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
     }
 
-    private boolean checkCameraHardware(){
+    private boolean checkCameraHardware() {
         return mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
 
 
-
-    public CameraManager getCameraManager(){
+    public CameraManager getCameraManager() {
         return mCameraManager;
     }
 

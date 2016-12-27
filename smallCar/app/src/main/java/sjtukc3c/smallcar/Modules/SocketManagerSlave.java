@@ -34,6 +34,7 @@ public class SocketManagerSlave {
     private boolean isConnected = false;
 
     private Camera camera;
+
     public SocketManagerSlave(Context context) {
         mContext = context;
         mConnectionStatus = MyConstants.Connection_Off;
@@ -97,7 +98,7 @@ public class SocketManagerSlave {
         }
     }
 
-    public void endConnection(){
+    public void endConnection() {
         if (isConnected) {
             camera.stopPreview();
             camera.setPreviewCallback(null);
@@ -109,11 +110,12 @@ public class SocketManagerSlave {
     }
 
 
-    private class InputVideoStream implements Camera.PreviewCallback{
+    private class InputVideoStream implements Camera.PreviewCallback {
 
         String ipname;
         int port;
-        InputVideoStream(String ip, int p){
+
+        InputVideoStream(String ip, int p) {
             ipname = ip;
             port = p;
         }
@@ -123,8 +125,7 @@ public class SocketManagerSlave {
             long curTime = (new Date(System.currentTimeMillis())).getTime();
             if (curTime - lastTime < 1000 / 10) {
                 return;
-            }
-            else {
+            } else {
                 lastTime = curTime;
             }
             Camera.Size size = camera.getParameters().getPreviewSize();
@@ -175,8 +176,8 @@ public class SocketManagerSlave {
                         ByteArrayInputStream inputstream = new ByteArrayInputStream(
                                 myoutputstream.toByteArray());
                         int amount;
-                        byte[] a = String.format("%016d", (int)curTime).getBytes();
-                        Log.e("Lyy", "Test a length: " + new String(a) + " | "+ a.length);
+                        byte[] a = String.format("%016d", (int) curTime).getBytes();
+                        Log.e("Lyy", "Test a length: " + new String(a) + " | " + a.length);
                         outsocket.write(a);
                         while ((amount = inputstream.read(byteBuffer)) != -1) {
                             outsocket.write(byteBuffer, 0, amount);
@@ -194,7 +195,7 @@ public class SocketManagerSlave {
     }
 
 
-    public void setSocket(String host, int port){
+    public void setSocket(String host, int port) {
         BuildUpConnection(host, port);
     }
 

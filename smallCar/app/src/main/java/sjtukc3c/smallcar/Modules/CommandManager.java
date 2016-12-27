@@ -22,14 +22,14 @@ public class CommandManager {
 
     private Socket mSocket;
 
-    public CommandManager(String h, int p){
+    public CommandManager(String h, int p) {
         setSlaveHost(h);
         setSlavePort(p);
         buildUpConnection();
     }
 
-    public void sendCommand(String cmd){
-        switch (cmd){
+    public void sendCommand(String cmd) {
+        switch (cmd) {
             case CMD_FOWARD:
             case CMD_BACK:
             case CMD_LEFT:
@@ -42,14 +42,14 @@ public class CommandManager {
         }
     }
 
-    private void buildUpConnection(){
+    private void buildUpConnection() {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     mSocket = new Socket(mSlaveHost, mSlavePort);
                     mSocket.sendUrgentData(0);
-                } catch (IOException e){
+                } catch (IOException e) {
 
                     e.printStackTrace();
                 }
@@ -58,11 +58,11 @@ public class CommandManager {
         th.start();
     }
 
-    private void closeConnection(){
-        if (mSocket != null){
+    private void closeConnection() {
+        if (mSocket != null) {
             try {
                 mSocket.close();
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -81,7 +81,7 @@ public class CommandManager {
                     DataOutputStream writer = new DataOutputStream(mSocket.getOutputStream());
                     writer.writeChars(cmd);
                     writer.flush();
-                } catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -91,19 +91,19 @@ public class CommandManager {
 
     }
 
-    public void setSlaveHost(String newHost){
+    public void setSlaveHost(String newHost) {
         if (newHost != null) {
             mSlaveHost = newHost;
         }
     }
 
-    public void setSlavePort(int newPort){
+    public void setSlavePort(int newPort) {
         if (newPort != -1) {
             mSlavePort = newPort;
         }
     }
 
-    public void flush(){
+    public void flush() {
         closeConnection();
         buildUpConnection();
     }
