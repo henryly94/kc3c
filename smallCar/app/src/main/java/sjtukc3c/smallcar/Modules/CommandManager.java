@@ -46,9 +46,9 @@ public class CommandManager {
         }
     }
 
-    private void buildUpConnection(){
+    private void buildUpConnection() {
         reconnect_count += 1;
-        if (reconnect_count > MAX_RECONNECT_AMOUNT && !mutex){
+        if (reconnect_count > MAX_RECONNECT_AMOUNT && !mutex) {
             mutex = true;
             Thread th = new Thread(new Runnable() {
                 @Override
@@ -68,11 +68,11 @@ public class CommandManager {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     mSocket = new Socket(mSlaveHost, mSlavePort);
                     mSocket.sendUrgentData(0);
                     reconnect_count = 0;
-                } catch (IOException e){
+                } catch (IOException e) {
 
                     e.printStackTrace();
                 }
@@ -81,11 +81,11 @@ public class CommandManager {
         th.start();
     }
 
-    private void closeConnection(){
-        if (mSocket != null){
+    private void closeConnection() {
+        if (mSocket != null) {
             try {
                 mSocket.close();
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -104,7 +104,7 @@ public class CommandManager {
                     DataOutputStream writer = new DataOutputStream(mSocket.getOutputStream());
                     writer.writeChars(cmd);
                     writer.flush();
-                } catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -114,19 +114,19 @@ public class CommandManager {
 
     }
 
-    public void setSlaveHost(String newHost){
+    public void setSlaveHost(String newHost) {
         if (newHost != null) {
             mSlaveHost = newHost;
         }
     }
 
-    public void setSlavePort(int newPort){
+    public void setSlavePort(int newPort) {
         if (newPort != -1) {
             mSlavePort = newPort;
         }
     }
 
-    public void flush(){
+    public void flush() {
         closeConnection();
         buildUpConnection();
     }
