@@ -19,8 +19,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/12/17.
  */
-public class SocketThreadMaster extends Thread{
-
+public class SocketThreadMaster extends Thread {
 
 
     private ServerSocket serverSocket;
@@ -34,6 +33,7 @@ public class SocketThreadMaster extends Thread{
     private int mHeight, mWidth;
     public static boolean running = true;
     private RemoteCommandManager mCommandManager;
+
     public SocketThreadMaster(ServerSocket ss, SurfaceView sv, int port, RemoteCommandManager cmdmanager) {
         mCommandManager = cmdmanager;
         mPort = port;
@@ -91,18 +91,18 @@ public class SocketThreadMaster extends Thread{
         }
     }
 
-    public void stopit(){
+    public void stopit() {
         running = false;
     }
 
 
     public void run() {
         try {
-            int curTime = (int)((new Date(System.currentTimeMillis())).getTime() % Integer.MAX_VALUE);
+            int curTime = (int) ((new Date(System.currentTimeMillis())).getTime() % Integer.MAX_VALUE);
             Log.e("Lyy", "Start Time: " + curTime);
             running = true;
             while (running) {
-                if (serverSocket == null || serverSocket.isClosed()){
+                if (serverSocket == null || serverSocket.isClosed()) {
                     serverSocket = null;
                     serverSocket = new ServerSocket(mPort);
                 }
@@ -151,9 +151,9 @@ public class SocketThreadMaster extends Thread{
     }
 
     private static String formatIpAddress(int ipAdress) {
-        return (ipAdress & 0xFF ) + "." +
-                ((ipAdress >> 8 ) & 0xFF) + "." +
-                ((ipAdress >> 16 ) & 0xFF) + "." +
-                ( ipAdress >> 24 & 0xFF) ;
+        return (ipAdress & 0xFF) + "." +
+                ((ipAdress >> 8) & 0xFF) + "." +
+                ((ipAdress >> 16) & 0xFF) + "." +
+                (ipAdress >> 24 & 0xFF);
     }
 }

@@ -21,7 +21,7 @@ public class TestFragment extends Fragment {
     private int position;
     private TextView mTextView;
 
-    public static TestFragment newInstance(int p){
+    public static TestFragment newInstance(int p) {
         TestFragment f = new TestFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, p);
@@ -39,7 +39,7 @@ public class TestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView;
-        switch (position){
+        switch (position) {
             case 0:
                 rootView = inflater.inflate(R.layout.fragment_test_1, container, false);
                 break;
