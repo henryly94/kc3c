@@ -1,11 +1,11 @@
 // Pin Mapping [Check Document]
 
-#define RIGHT_ENABLE P2_0
-#define LEFT_ENABLE P2_5
-#define LEFT_AHEAD P2_1
-#define LEFT_BACK P2_2
-#define RIGHT_AHEAD P2_3
-#define RIGHT_BACK P2_4
+#define LEFT_ENABLE P2_0
+#define RIGHT_ENABLE P2_5
+#define RIGHT_AHEAD P2_1
+#define RIGHT_BACK P2_2
+#define LEFT_AHEAD P2_3
+#define LEFT_BACK P2_4
 
 // AHEAD: HIGH  BACK: LOW -> MOVE FORWARD
 // AHEAD: LOW  BACK: HIGH -> MOVE BACKWARD
@@ -14,6 +14,9 @@
 // Default Value
 #define VALUE_A 170
 #define VALUE_B 128
+
+int SPEED = 255;
+float COEFFICIENT = 0.4;
 
 // Interface
 // Precise direction control -> analogWrite()
@@ -42,6 +45,8 @@ void goBackward(){
 }
 
 void park(){
+  digitalWrite(LEFT_ENABLE,LOW);
+  digitalWrite(RIGHT_ENABLE,LOW);
   digitalWrite(LEFT_AHEAD,LOW);
   digitalWrite(LEFT_BACK,LOW);
   digitalWrite(RIGHT_AHEAD,LOW);
@@ -49,6 +54,8 @@ void park(){
 }
 
 void turnLeft(){
+  analogWrite(LEFT_ENABLE, COEFFICIENT*SPEED);
+  analogWrite(RIGHT_ENABLE, SPEED);
   digitalWrite(LEFT_AHEAD,LOW);
   digitalWrite(LEFT_BACK,LOW);
   digitalWrite(RIGHT_AHEAD,HIGH);
@@ -56,6 +63,8 @@ void turnLeft(){
 }
 
 void turnRight(){
+  analogWrite(RIGHT_ENABLE, COEFFICIENT*SPEED);
+  analogWrite(LEFT_ENABLE, SPEED);
   digitalWrite(LEFT_AHEAD,HIGH);
   digitalWrite(LEFT_BACK,LOW);
   digitalWrite(RIGHT_AHEAD,LOW);
