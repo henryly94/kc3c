@@ -39,6 +39,8 @@ public class GravityFragment extends MasterFragment {
     private TextView mResutText;
     private TextView mResutText_Ins;
 
+    private boolean mutex = true;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,26 +59,43 @@ public class GravityFragment extends MasterFragment {
         sensorEventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
-                float x = sensorEvent.values[0];
-                float y = sensorEvent.values[1];
-                float z = sensorEvent.values[2];
-                mResutText.setText(String.valueOf(x) + "   " + String.valueOf(y) + "   " + String.valueOf(z));
 
-                if ((y < -4) && (x > -2) && (x < 2)) {
-                    mResutText_Ins.setText(MyConstants.INSTRUCTION_FORWARD);
-                    mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
-                } else if ((y > 4) && (x > -2) && (x < 2)) {
-                    mResutText_Ins.setText(MyConstants.INSTRUCTION_BACKWORD);
-                    mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
-                } else if ((x > 4) && (y < 2) && (y > -2)) {
-                    mResutText_Ins.setText(MyConstants.INSTRUCTION_LEFT);
-                    mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
-                } else if ((x < -4) && (y < 2) && (y > -2)) {
-                    mResutText_Ins.setText(MyConstants.INSTRUCTION_RIGHT);
-                    mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
-                } else {
-                    mResutText_Ins.setText(MyConstants.INSTRUCTION_STOP);
-                    mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+                if (mutex) {
+                    mutex = false;
+                    Thread th = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                Thread.sleep(2000);
+                                mutex = true;
+                            } catch (InterruptedException e) {
+                                Log.e("GravityFragment", e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    th.start();
+                    float x = sensorEvent.values[0];
+                    float y = sensorEvent.values[1];
+                    float z = sensorEvent.values[2];
+                    mResutText.setText(String.valueOf(x) + "   " + String.valueOf(y) + "   " + String.valueOf(z));
+
+                    if ((y < -4) && (x > -2) && (x < 2)) {
+                        mResutText_Ins.setText(MyConstants.INSTRUCTION_FORWARD);
+                        mCommandManager.sendCommand(RemoteCommandManager.CMD_FOWARD);
+                    } else if ((y > 4) && (x > -2) && (x < 2)) {
+                        mResutText_Ins.setText(MyConstants.INSTRUCTION_BACKWORD);
+                        mCommandManager.sendCommand(RemoteCommandManager.CMD_BACK);
+                    } else if ((x > 4) && (y < 2) && (y > -2)) {
+                        mResutText_Ins.setText(MyConstants.INSTRUCTION_LEFT);
+                        mCommandManager.sendCommand(RemoteCommandManager.CMD_LEFT);
+                    } else if ((x < -4) && (y < 2) && (y > -2)) {
+                        mResutText_Ins.setText(MyConstants.INSTRUCTION_RIGHT);
+                        mCommandManager.sendCommand(RemoteCommandManager.CMD_RIGHT);
+                    } else {
+                        mResutText_Ins.setText(MyConstants.INSTRUCTION_STOP);
+                        mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+                    }
                 }
             }
 

@@ -90,7 +90,7 @@ public class GestureFragment extends MasterFragment {
                             if (mResutText.isFocused()) Log.e(TAG, "onTouch: is focused");
                         } else if (((x1 - x2) < 10 || (x2 - x1) < 10) && ((y1 - y2) < 10 || (y2 - y1) < 10)) {
                             mResutText.setText(MyConstants.INSTRUCTION_STOP);
-                            mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
+//                            mCommandManager.sendCommand(RemoteCommandManager.CMD_STOP);
 
                             Log.i(TAG, "onTouch: stop");
                         }
