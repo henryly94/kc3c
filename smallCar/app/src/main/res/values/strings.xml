@@ -13,4 +13,6 @@
     <string name="wenhao_zhu">Wenhao Zhu</string>
     <string name="weehow_z_gmail_com">Weehow.z@gmail.com</string>
     <string name="instruction">Instruction</string>
+    <string name="gravity">gravity</string>
+    <string name="gesture">gesture</string>
 </resources>

@@ -24,8 +24,8 @@ import sjtukc3c.smallcar.R;
 /**
  * Created by Administrator on 2016/12/20.
  */
-public class RemoteStartFragment extends DialogFragment implements View.OnClickListener{
-    public static RemoteStartFragment newInstance(){
+public class RemoteStartFragment extends DialogFragment implements View.OnClickListener {
+    public static RemoteStartFragment newInstance() {
         return new RemoteStartFragment();
     }
 
@@ -33,7 +33,8 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
     private EditText et;
     private String MyIp;
     private int mPort = 15536;
-    public interface FragmentListener{
+
+    public interface FragmentListener {
         void send();
     }
 
@@ -50,11 +51,11 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
             getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }
 
-        ViewGroup root = (ViewGroup)inflater.inflate(R.layout.fragment_master_config, container, false);
-        MyIp = getWIFILocalIpAdress((WifiManager)root.getContext().getSystemService(Context.WIFI_SERVICE));
-        android.widget.Button btn =  (android.widget.Button)root.findViewById(R.id.btn_master_remote);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_master_config, container, false);
+        MyIp = getWIFILocalIpAdress((WifiManager) root.getContext().getSystemService(Context.WIFI_SERVICE));
+        android.widget.Button btn = (android.widget.Button) root.findViewById(R.id.btn_master_remote);
         btn.setOnClickListener(this);
-        et = (EditText)root.findViewById(R.id.et_master_remote);
+        et = (EditText) root.findViewById(R.id.et_master_remote);
         return root;
     }
 
@@ -85,13 +86,13 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
     }
 
 
-    private void sendRequest(){
+    private void sendRequest() {
         final String ip = et.getText().toString();
         final int port = mPort + 10;
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Socket s = new Socket(ip, port);
                     DataOutputStream out = new DataOutputStream(s.getOutputStream());
                     String json = String.format(
@@ -104,7 +105,7 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
                     out.flush();
                     out.close();
                     s.close();
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -121,19 +122,19 @@ public class RemoteStartFragment extends DialogFragment implements View.OnClickL
         }
         WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
         int ipAddress = wifiInfo.getIpAddress();
-        String ip = formatIpAddress(ipAddress);
-        return ip;
+        return formatIpAddress(ipAddress);
     }
+
     private static String formatIpAddress(int ipAdress) {
-        return (ipAdress & 0xFF ) + "." +
-                ((ipAdress >> 8 ) & 0xFF) + "." +
-                ((ipAdress >> 16 ) & 0xFF) + "." +
-                ( ipAdress >> 24 & 0xFF) ;
+        return (ipAdress & 0xFF) + "." +
+                ((ipAdress >> 8) & 0xFF) + "." +
+                ((ipAdress >> 16) & 0xFF) + "." +
+                (ipAdress >> 24 & 0xFF);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_master_remote:
                 sendRequest();
                 break;

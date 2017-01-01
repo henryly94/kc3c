@@ -6,6 +6,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -19,14 +20,13 @@ import java.net.ServerSocket;
 
 import butterknife.ButterKnife;
 import sjtukc3c.smallcar.Modules.CommandManager;
-import sjtukc3c.smallcar.Modules.IVoiceDataPresenter;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
 
 /**
  * Created by Administrator on 2016/12/20.
  */
-public class SlaveFragment extends Fragment implements View.OnClickListener{
+public class SlaveFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_POSITION = "position";
     private int position;
 
@@ -38,19 +38,20 @@ public class SlaveFragment extends Fragment implements View.OnClickListener{
 
     public static EditText et;
 
-    private IVoiceDataPresenter mVoiceDataPresenter;
-
-
-
     private CommandManager mCommandManager;
 
     private FragmentListener mFragmentListener;
-    public interface FragmentListener{
+
+    private TextView mDebugTv;
+    private String mDebugStr = "";
+
+    public interface FragmentListener {
         void begin();
+
         void end();
     }
 
-    public static SlaveFragment newInstance(int p){
+    public static SlaveFragment newInstance(int p) {
         SlaveFragment f = new SlaveFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, p);
@@ -76,13 +77,14 @@ public class SlaveFragment extends Fragment implements View.OnClickListener{
             case 0:
                 rootView = inflater.inflate(R.layout.fragment_slave_capturing, container, false);
 
-                Button bg = (Button)rootView.findViewById(R.id.slave_btn_begin);
-                Button ed = (Button)rootView.findViewById(R.id.slave_btn_end);
-                TextView tv1 = (TextView)rootView.findViewById(R.id.slave_etv_my_ip);
-                et = (EditText)rootView.findViewById(R.id.slave_etv_tar_ip);
-
+                Button bg = (Button) rootView.findViewById(R.id.slave_btn_begin);
+                Button ed = (Button) rootView.findViewById(R.id.slave_btn_end);
+                TextView tv1 = (TextView) rootView.findViewById(R.id.slave_etv_my_ip);
+                et = (EditText) rootView.findViewById(R.id.slave_etv_tar_ip);
+                mDebugTv = (TextView)rootView.findViewById(R.id.slave_debug_tv);
+                Log.e("SlaveFragment", "debugtv: " + (mDebugTv == null));
                 tv1.setText(
-                        getWIFILocalIpAdress((WifiManager)rootView.getContext().getSystemService(Context.WIFI_SERVICE))
+                        getWIFILocalIpAdress((WifiManager) rootView.getContext().getSystemService(Context.WIFI_SERVICE))
                 );
 
                 bg.setOnClickListener(this);
@@ -113,14 +115,29 @@ public class SlaveFragment extends Fragment implements View.OnClickListener{
         String ip = formatIpAddress(ipAddress);
         return ip;
     }
+
     private static String formatIpAddress(int ipAdress) {
-        return (ipAdress & 0xFF ) + "." +
-                ((ipAdress >> 8 ) & 0xFF) + "." +
-                ((ipAdress >> 16 ) & 0xFF) + "." +
-                ( ipAdress >> 24 & 0xFF) ;
+        return (ipAdress & 0xFF) + "." +
+                ((ipAdress >> 8) & 0xFF) + "." +
+                ((ipAdress >> 16) & 0xFF) + "." +
+                (ipAdress >> 24 & 0xFF);
     }
 
-    public EditText getEt(){
+    public void setDebugTv(String cmd){
+
+        String[] a = mDebugStr.split("\n");
+        if (a.length >= 5){
+            mDebugStr = "";
+            for (int i=1; i<a.length; i++)mDebugStr += a[i] + '\n';
+        }
+        mDebugStr += cmd;
+        Log.e("SlaveFragment", "mDebugTv: " + (mDebugTv == null) );
+
+//        mDebugTv.setText(mDebugStr);
+
+    }
+
+    public EditText getEt() {
         if (et != null) {
             return et;
         } else {
@@ -131,14 +148,14 @@ public class SlaveFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof FragmentListener){
-            mFragmentListener = (FragmentListener)activity;
+        if (activity instanceof FragmentListener) {
+            mFragmentListener = (FragmentListener) activity;
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.slave_btn_begin:
                 mFragmentListener.begin();
                 break;

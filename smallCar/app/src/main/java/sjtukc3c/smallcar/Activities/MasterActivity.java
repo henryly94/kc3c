@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -32,10 +31,8 @@ import sjtukc3c.smallcar.Fragments.RemoteStartFragment;
 import sjtukc3c.smallcar.Modules.RemoteCommandManager;
 import sjtukc3c.smallcar.Modules.SocketThreadMaster;
 import sjtukc3c.smallcar.R;
+import sjtukc3c.smallcar.Utils.CustomViewPager;
 
-/**
- * Created by Administrator on 2016/12/14.
- */
 public class MasterActivity
         extends AppCompatActivity
         implements View.OnClickListener {
@@ -44,7 +41,8 @@ public class MasterActivity
 
     private Toolbar mToolbar;
     private Drawable oldBackground;
-    private ViewPager mPager;
+    //    private ViewPager mPager;
+    private CustomViewPager mPager;
     private PagerSlidingTabStrip mTab;
     private MyAdapter mAdapter;
     private SystemBarTintManager mTintManager;
@@ -75,10 +73,10 @@ public class MasterActivity
 
         mSurfaceView = (SurfaceView) findViewById(R.id.sv_master);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mPager = (ViewPager) findViewById(R.id.pager);
+//        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = (CustomViewPager) findViewById(R.id.pager);
 
         setSupportActionBar(mToolbar);
-
 
         mTintManager = new SystemBarTintManager(this);
         mTintManager.setStatusBarTintEnabled(true);
