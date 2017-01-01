@@ -1,0 +1,33 @@
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>
+        <a href="{{ site.baseurl }}">
+          {{ site.title }}
+        </a>
+      </h1>
+      <p class="lead">{{ site.description }}</p>
+    </div>
+    <hr/>
+
+  </br>
+
+    <nav class="sidebar-nav">
+      <a class="sidebar-nav-item{% if page.url == "/" %} active{% endif %}" href="/">主页</a>
+
+      {% assign pages_list = site.pages %}
+      {% for node in pages_list %}
+        {% if node.title != null %}
+          {% if node.layout == "page" %}
+            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{ node.url }}">{{ node.title }}</a>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      </br>
+      <a class="sidebar-nav-item" href="{{ site.github.repo }}" target="_blank"><i>GitHub Repo</i></a>
+
+    </nav>
+
+    <p>Copyright &copy;  <a href="http://blog.delvin.xyz">Wenhao Zhu</a> {{ site.time | date: '%Y' }}</p>
+  </div>
+</div>
