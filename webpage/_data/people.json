@@ -1,5 +1,4 @@
 [
-
   {
     "name" : "李一玚",
     "email" : "",
@@ -11,10 +10,9 @@
   {
     "name" : "朱文豪",
     "email" : "weehowe.z@gmail.com",
-    "photo" : "sdsd",
+    "photo" : "/img/test.jpg",
     "role" : "扫地工程师",
     "feeling" : "感觉不错",
   },
-
 
 ]

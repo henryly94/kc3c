@@ -10,9 +10,13 @@ permalink: /about/
 
 {% for person in site.data.people %}
 
-**{{person.name}}**
+![]({{person.photo}})
 
-**Email**: [{{person.email}}](mailto:{{person.email}})
+**{{person.name}}** ([{{person.email}}](mailto:{{person.email}}))
+
+{{person.role}}
+
+**感想**： {{person.feeling}}
 
 ---
 
