@@ -58,35 +58,38 @@
 
 
         </LinearLayout>
-        <LinearLayout
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_weight="9"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text=""
+            android:layout_weight="9"
+            android:id="@+id/slave_debug_tv" />
 
 
-            <Button
-                android:id="@+id/slave_btn_begin"
-                android:text="Begin"
-                android:textColor="@color/dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+        <Button
+            android:id="@+id/slave_btn_begin"
+            android:text="Begin"
+            android:textColor="@color/dark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
-            <Button
-                android:id="@+id/slave_btn_end"
-                android:text="End"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:textColor="@color/dark"
-                android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/slave_btn_end"
+            android:text="End"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:textColor="@color/dark"
+            android:layout_height="wrap_content" />
 
 
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

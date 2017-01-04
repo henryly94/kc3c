@@ -116,7 +116,8 @@ public class BluetoothManager {
             OutputStream out = mSocket.getOutputStream();
             out.write(cmd.getBytes());
         } catch (IOException e) {
-            Log.e("Lyy", "Bluetooth Sending Error");
+            Log.e("Lyy", "Bluetooth Sending Error: " + e.getMessage());
+            buildUp();
             e.printStackTrace();
         }
     }

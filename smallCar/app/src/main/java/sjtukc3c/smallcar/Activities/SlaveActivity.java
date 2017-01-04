@@ -20,6 +20,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -69,6 +70,7 @@ public class SlaveActivity extends AppCompatActivity
     private int cmdPort = 15546;
     private ServerSocket mServerSocket;
 
+    private TextView debugTv;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -85,6 +87,7 @@ public class SlaveActivity extends AppCompatActivity
                     break;
                 case MyConstants.TAG_REMOTE_MASTER_COMMAND:
                     String cmd = msg.getData().getString(MyConstants.TAG_CMD);
+                    renewDebugTextView(cmd);
                     mBluetoothManager.sendMessage(cmd);
                 default:
                     break;
@@ -92,6 +95,11 @@ public class SlaveActivity extends AppCompatActivity
             super.handleMessage(msg);
         }
     };
+
+    private void renewDebugTextView(String cmd) {
+        Log.e("SlaveActivity", "DebugTv, mFragment " + (mFragment == null));
+        mFragment.setDebugTv(cmd);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,0 +1,23 @@
+title: 工科创 3C 第39组
+description: 基于安卓的智能车系统
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Build settings
+markdown: kramdown
+
+theme: minima
+
+gems:
+  - jekyll-feed
+exclude:
+  - Gemfile
+  - Gemfile.lock
+
+# CDN
+cdn:
+  url:
+
+# GitHub
+github:
+  repo: https://github.com/henryly94/kc3c

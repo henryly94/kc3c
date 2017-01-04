@@ -6,6 +6,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
@@ -40,6 +41,9 @@ public class SlaveFragment extends Fragment implements View.OnClickListener {
     private CommandManager mCommandManager;
 
     private FragmentListener mFragmentListener;
+
+    private TextView mDebugTv;
+    private String mDebugStr = "";
 
     public interface FragmentListener {
         void begin();
@@ -77,7 +81,8 @@ public class SlaveFragment extends Fragment implements View.OnClickListener {
                 Button ed = (Button) rootView.findViewById(R.id.slave_btn_end);
                 TextView tv1 = (TextView) rootView.findViewById(R.id.slave_etv_my_ip);
                 et = (EditText) rootView.findViewById(R.id.slave_etv_tar_ip);
-
+                mDebugTv = (TextView)rootView.findViewById(R.id.slave_debug_tv);
+                Log.e("SlaveFragment", "debugtv: " + (mDebugTv == null));
                 tv1.setText(
                         getWIFILocalIpAdress((WifiManager) rootView.getContext().getSystemService(Context.WIFI_SERVICE))
                 );
@@ -116,6 +121,20 @@ public class SlaveFragment extends Fragment implements View.OnClickListener {
                 ((ipAdress >> 8) & 0xFF) + "." +
                 ((ipAdress >> 16) & 0xFF) + "." +
                 (ipAdress >> 24 & 0xFF);
+    }
+
+    public void setDebugTv(String cmd){
+
+        String[] a = mDebugStr.split("\n");
+        if (a.length >= 5){
+            mDebugStr = "";
+            for (int i=1; i<a.length; i++)mDebugStr += a[i] + '\n';
+        }
+        mDebugStr += cmd;
+        Log.e("SlaveFragment", "mDebugTv: " + (mDebugTv == null) );
+
+//        mDebugTv.setText(mDebugStr);
+
     }
 
     public EditText getEt() {
