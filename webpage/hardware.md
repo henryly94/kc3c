@@ -12,6 +12,8 @@ permalink: /hardware/
 
 ---
 
+<!-- anchor -->
+
 ## 开发环境
 
 <br/>
@@ -44,7 +46,7 @@ permalink: /hardware/
 
 <br/>
 
-![launchpad](http://ohecbiy0g.bkt.clouddn.com/kc3c/launchpad.jpg)
+![launchpad]({{site.cdn.url}}/launchpad.jpg)
 
 ### 单片机接线示意图
 
@@ -56,7 +58,7 @@ permalink: /hardware/
 
 <br/>
 
-![LM293](http://ohecbiy0g.bkt.clouddn.com/kc3c/LM293.png)
+![LM293]({{site.cdn.url}}/LM293.png)
 
 ---
 

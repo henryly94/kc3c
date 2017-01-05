@@ -9,11 +9,11 @@ permalink: /download/
 
 <br/>
 
-- [硬件代码](http://ohecbiy0g.bkt.clouddn.com/kc3c/hardware.zip)
+- [硬件代码]({{site.cdn.url}}/hardware.zip)
 
-- [安卓代码](http://ohecbiy0g.bkt.clouddn.com/kc3c/android.zip)
+- [安卓代码]({{site.cdn.url}}/android.zip)
 
-- [网页代码](#)
+- [网页代码]({{site.cdn.url}}/web.zip)
 
 ---
 

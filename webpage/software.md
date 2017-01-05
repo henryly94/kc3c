@@ -10,6 +10,8 @@ permalink: /software/
 
 ---
 
+<!-- anchor -->
+
 ## 开发环境
 
 - OS `Ubuntu 14.04`/ `Windows 8.0`

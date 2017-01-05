@@ -13,10 +13,14 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+  - scripts/
+
+# Print
+print: true
 
 # CDN
 cdn:
-  url:
+  url: http://ohecbiy0g.bkt.clouddn.com/kc3c
 
 # GitHub
 github:
