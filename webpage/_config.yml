@@ -13,10 +13,11 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
-  - scripts/
+  - genPDF.py
+  - deploy.sh
 
 # Print
-print: true
+printPDF: false
 
 # CDN
 cdn:

@@ -5,6 +5,8 @@ permalink: /download/
 ---
 ---
 
+<!-- anchor -->
+
 ### 代码下载
 
 <br/>

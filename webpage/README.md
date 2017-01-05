@@ -13,5 +13,9 @@
 
 > Visit [http://127.0.0.1:4000/](http://127.0.0.1:4000/)
 
-
 Some assets distributed by CDN are NOT INCLUDED
+
+```
+~/webpage $ ps -aux | grep jekyll
+~/webpage $ kill [JEKYLL PID]
+```

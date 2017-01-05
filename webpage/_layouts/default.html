@@ -5,9 +5,9 @@
 
   <body>
 
-    {% if site.printPDF %}
+    {% unless site.printPDF %}
       {% include sidebar.html %}
-    {% endif %}
+    {% endunless %}
 
     <div class="content container">
       {{ content }}
