@@ -13,6 +13,18 @@ permalink: /download/
 
 - [安卓代码](http://ohecbiy0g.bkt.clouddn.com/kc3c/android.zip)
 
+- [网页代码](#)
+
+---
+
+### 其他下载
+
+<br/>
+
+- [实验报告](#)
+
+- [系统电路图](/hardware/#单片机接线示意图)
+
 ---
 
 ### 参考资料
@@ -26,8 +38,6 @@ permalink: /download/
 - [Energia 指导书](/assets/refbook_energia.pdf)
 
 - [Setup Energia on Linux](http://energia.nu/guide/guide_linux/)
-
-- [系统电路图](/hardware/#单片机接线示意图)
 
 ---
 

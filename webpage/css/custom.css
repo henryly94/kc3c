@@ -141,3 +141,12 @@
     bottom: 30px;
   }
 }
+
+/* photo*/
+@media only screen and (min-width: 1024px) {
+  .photo {
+    max-height: 200px;
+    float: left;
+    margin-right: 20px;
+  }
+}

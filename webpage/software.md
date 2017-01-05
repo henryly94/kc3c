@@ -169,7 +169,7 @@ public class CommandManager {
 ### UI设计
 
 
-我们采用Android的Material Design的元素来进行UI设计. 为了迎合多种不同的操作方式以及保持双机间视频传输, 将画面放在主体部分的同时,在上方加入SlidingTab来进行控制模式的切换,操作方式符合直觉习惯并且十分方便.
+我们采用Android的**Material Design**的元素来进行UI设计. 为了迎合多种不同的操作方式以及保持双机间视频传输, 将画面放在主体部分的同时,在上方加入`SlidingTab`来进行控制模式的切换,操作方式符合直觉习惯并且十分方便.
 
 ![MasterActivity](/img/MasterActivity_Normal.jpg)
 

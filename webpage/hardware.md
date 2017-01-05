@@ -26,6 +26,10 @@ permalink: /hardware/
 
 ## 硬件介绍
 
+<br/>
+
+![hardware](/img/hardware.jpg)
+
 ### 硬件设备
 
 小车控制采用`MSP430G2553`单片机，拥有串口通信，三路PWM控制器，较为丰富的I/O接口，适编程模型简单，用于多种控制场合。小车电源有4节AAA电池提供，其中电机驱动电路直接由电源提供，小车控制器以及其他数字部分由DC-DC电压转换器提供，电压3.3V。电机驱动采用`L293D`芯片.`L293D`采用16引脚DIP封装，其内部集成了四个双极型半H-桥电路，通过合适的电路连接，实现一个双路H桥电机驱动，以实现小车的前进后退以及调速。
@@ -161,29 +165,3 @@ void loop() {
   }
 }
 ```
-
----
-
-TO DO
-
-## Setup
-
-- [Setup Energia on Linux](http://energia.nu/guide/guide_linux/)
-
-## Issue
-
-**1. Permission denied while uploading**
-
-```
-rf2500: can't claim interface: permission denied
-rf2500: failed to open RF2500 device.
-```
-
-Run the IDE as root works. Otherwise, try to add current user to two usergroup and reboot may work (not for me). [[Forum Discussion]](https://bbs.archlinux.org/viewtopic.php?id=122180)
-
-```
-sudo usermod -aG uucp <USERNAME>
-sudo usermod -aG lock <USERNAME>
-```
-
----
