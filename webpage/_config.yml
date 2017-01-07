@@ -13,10 +13,15 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+  - genPDF.py
+  - deploy.sh
+
+# Print
+printPDF: false
 
 # CDN
 cdn:
-  url:
+  url: http://ohecbiy0g.bkt.clouddn.com/kc3c
 
 # GitHub
 github:

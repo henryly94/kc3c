@@ -5,11 +5,15 @@
 
   <body>
 
-    {% include sidebar.html %}
+    {% unless site.printPDF %}
+      {% include sidebar.html %}
+    {% endunless %}
 
     <div class="content container">
       {{ content }}
     </div>
+
+    {% include footer.html %}
 
   </body>
 </html>

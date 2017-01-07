@@ -10,13 +10,15 @@ permalink: /about/
 
 {% for person in site.data.people %}
 
-![]({{person.photo}})
+<!-- TODO CHANGE TO Responsive -->
+
+<img src="{{person.photo}}" alt="{{person.name}}" class="photo" />
 
 **{{person.name}}** ([{{person.email}}](mailto:{{person.email}}))
 
 {{person.role}}
 
-**感想**： {{person.feeling}}
+{{person.feeling}}
 
 ---
 

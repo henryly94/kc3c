@@ -1,0 +1,27 @@
+<footer>
+
+  <!-- Scroll to top button -->
+  <a href="javascript:void(0)" class="cd-top">Top</a>
+
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- NProgress JavaScript -->
+<script src="/js/nprogress.js"></script>
+
+<!--NProgress.js -->
+{% unless site.printPDF %}
+<script>
+    NProgress.start();
+    var interval=setInterval(function(){NProgress.inc()},1000);
+    jQuery(window).load(function(){
+        clearInterval(interval);
+        NProgress.done();
+    });
+    jQuery(window).unload(function(){
+        NProgress.start();
+    });
+</script>
+{% endunless %}
