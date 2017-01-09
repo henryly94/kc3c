@@ -31,8 +31,11 @@ title: 主页
 
 ## 演示视频
 
-![待上传]()
+<!-- <video src="{{site.cdn.url}}/video1.MTS" controls="true" width="300px"></video> -->
 
+<!-- <br/> -->
+
+<!-- <video src="/assets/video1.MTS" controls="true"></video> -->
 
 ## 整体结构
 
