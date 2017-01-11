@@ -12,7 +12,7 @@ permalink: /about/
 
 <!-- TODO CHANGE TO Responsive -->
 
-<img src="{{person.photo}}" alt="{{person.name}}" class="photo" />
+<img src="{{site.baseurl}}{{person.photo}}" alt="{{person.name}}" class="photo" />
 
 **{{person.name}}** ([{{person.email}}](mailto:{{person.email}}))
 

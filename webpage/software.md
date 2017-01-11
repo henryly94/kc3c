@@ -34,7 +34,7 @@ permalink: /software/
 ### 代码结构
 
 软件架构采用了MVP的设计模式. 其中主从双方有各自的通信管理机制.
-![MVP-Android](/img/MVP-Android.png)
+![MVP-Android]({{site.baseurl}}/img/MVP-Android.png)
 
 <br/>
 
@@ -173,11 +173,11 @@ public class CommandManager {
 
 我们采用Android的**Material Design**的元素来进行UI设计. 为了迎合多种不同的操作方式以及保持双机间视频传输, 将画面放在主体部分的同时,在上方加入`SlidingTab`来进行控制模式的切换,操作方式符合直觉习惯并且十分方便.
 
-![MasterActivity](/img/MasterActivity_Normal.jpg)
+![MasterActivity]({{site.baseurl}}/img/MasterActivity_Normal.jpg)
 
 <br/>
 
-![SlaveActivity](/img/SlaveActivity_Capturing.jpg)
+![SlaveActivity]({{site.baseurl}}/img/SlaveActivity_Capturing.jpg)
 
 ## Android编程
 
