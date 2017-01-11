@@ -104,7 +104,7 @@ if __name__ == '__main__':
         # insertScript()
 
         p_browser = subprocess.Popen(
-            BROWSER + " http://127.0.0.1:4000/report", shell=True)
+            BROWSER + " http://127.0.0.1:4000/kc/2016-12/C39/report", shell=True)
 
         time.sleep(30)
         print("Timeout. Kill process.")

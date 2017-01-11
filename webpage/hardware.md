@@ -30,7 +30,7 @@ permalink: /hardware/
 
 <br/>
 
-![hardware](/img/hardware.jpg)
+![hardware]({{site.baseurl}}/img/hardware.jpg)
 
 ### 硬件设备
 
@@ -40,7 +40,7 @@ permalink: /hardware/
 
 <br/>
 
-![structure](/img/hardware-structure.png)
+![structure]({{site.baseurl}}/img/hardware-structure.png)
 
 ### 单片机示意图
 
@@ -52,7 +52,7 @@ permalink: /hardware/
 
 <br/>
 
-![circuit](/img/circuit.jpg)
+![circuit]({{site.baseurl}}/img/circuit.jpg)
 
 ### 电机驱动示意图
 
@@ -70,7 +70,7 @@ permalink: /hardware/
 
 <br/>
 
-![Energiacode](/img/energiacode.png)
+![Energiacode]({{site.baseurl}}/img/energiacode.png)
 
 ### 代码示例
 

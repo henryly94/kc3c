@@ -25,7 +25,7 @@ permalink: /download/
 
 - [实验报告](#)
 
-- [系统电路图](/hardware/#单片机接线示意图)
+- [系统电路图]({{site.baseurl}}/hardware/#单片机接线示意图)
 
 ---
 
@@ -35,9 +35,9 @@ permalink: /download/
 
 - [课程网站](http://eelab.sjtu.edu.cn/Course/course/view.php?id=62)
 
-- [实验指导书](/assets/refbook.pdf)
+- [实验指导书]({{site.baseurl}}/assets/refbook.pdf)
 
-- [Energia 指导书](/assets/refbook_energia.pdf)
+- [Energia 指导书]({{site.baseurl}}/assets/refbook_energia.pdf)
 
 - [Setup Energia on Linux](http://energia.nu/guide/guide_linux/)
 

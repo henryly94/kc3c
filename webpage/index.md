@@ -21,7 +21,7 @@ title: 主页
 
 本课题是基于 Android 平台，借助于蓝牙通讯技术，从而设计和实现以手机APP控制、蓝牙通讯连接单片机电路操控等模块组成的无线遥控小车的解决方案。在具体完成过程中，我们成功实现了通过手机`按键`,`重力`,`语音`,`手势`等操作，使得小车能顺利完成前进、后退、左转、右转等相应动作。同时，我们也实现了`实时视频传输`的功能，可以通过小车负载手机的摄像头捕捉图像，即时传输到控制手机端。
 
-![car image](/img/intro.jpg)
+![car image]({{site.baseurl}}/img/intro.jpg)
 
 <br/>
 
@@ -31,12 +31,15 @@ title: 主页
 
 ## 演示视频
 
-![待上传]()
+<!-- <video src="{{site.cdn.url}}/video1.MTS" controls="true" width="300px"></video> -->
 
+<!-- <br/> -->
+
+<!-- <video src="/assets/video1.MTS" controls="true"></video> -->
 
 ## 整体结构
 
-![structure](/img/structure.png)
+![structure]({{site.baseurl}}/img/structure.png)
 
 ## 系统测试
 
