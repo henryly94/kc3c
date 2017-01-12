@@ -3,7 +3,7 @@
 import time
 import subprocess
 
-BROWSER = "google-chrome-unstable"
+# BROWSER = "google-chrome-unstable"
 
 
 def getContent(content):
@@ -103,8 +103,12 @@ if __name__ == '__main__':
         print("-----------")
         # insertScript()
 
+        # p_browser = subprocess.Popen(
+        #     BROWSER + " http://127.0.0.1:4000/kc/2016-12/C39/report", shell=True)
+
+        # this will call default application to open under linux/osx
         p_browser = subprocess.Popen(
-            BROWSER + " http://127.0.0.1:4000/kc/2016-12/C39/report", shell=True)
+            "xdg-open http://127.0.0.1:4000/kc/2016-12/C39/report", shell=True)
 
         time.sleep(30)
         print("Timeout. Kill process.")
