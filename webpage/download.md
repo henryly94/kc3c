@@ -15,7 +15,7 @@ permalink: /download/
 
 - [安卓代码]({{site.cdn.url}}/android.zip)
 
-- [网页代码]({{site.cdn.url}}/web.zip)
+- [网页代码](https://github.com/henryly94/kc3c/archive/master.zip)
 
 ---
 
@@ -23,7 +23,7 @@ permalink: /download/
 
 <br/>
 
-- [实验报告](#)
+- [实验报告]({{site.cdn.url}}/report.pdf)
 
 - [系统电路图]({{site.baseurl}}/hardware/#单片机接线示意图)
 
