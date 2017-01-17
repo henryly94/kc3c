@@ -112,7 +112,6 @@ if __name__ == '__main__':
 
         time.sleep(30)
         print("Timeout. Kill process.")
-        p_jekyll.terminate()
     except Exception as e:
         raise
     finally:
@@ -120,3 +119,5 @@ if __name__ == '__main__':
         # clear generated pages
         subprocess.Popen("rm -rf _site/", shell=True)
         subprocess.Popen("rm report.md", shell=True)
+        p_jekyll.terminate()
+        p_browser.terminate()
