@@ -31,11 +31,15 @@ title: 主页
 
 ## 演示视频
 
-<!-- <video src="{{site.cdn.url}}/video1.MTS" controls="true" width="300px"></video> -->
+<br/>
 
-<!-- <br/> -->
+<video controls="controls" >
+  <source src="http://eelab.sjtu.edu.cn/kc/2016-12/C39/assets/video1.mp4" type="video/mp4">
+</video>
 
-<!-- <video src="/assets/video1.MTS" controls="true"></video> -->
+<br/>
+
+[演示视频下载](http://eelab.sjtu.edu.cn/kc/2016-12/C39/assets/video1.mp4)
 
 ## 整体结构
 
